@@ -3,10 +3,10 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router/index.js';
 import './style.css';
-import { registerSW } from 'virtual:pwa-register';
+// import { registerSW } from 'virtual:pwa-register';
 
 // 注册 PWA Service Worker
-registerSW({ immediate: true });
+// registerSW({ immediate: true });
 
 // 引入 Element Plus
 import ElementPlus from 'element-plus';
