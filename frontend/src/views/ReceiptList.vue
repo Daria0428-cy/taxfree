@@ -310,17 +310,18 @@ onMounted(refresh);
 
 <style scoped>
 .receipt-list-page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(to bottom right, #eff6ff, #f5f3ff, #fdf2f8);
-  padding-bottom: 120px;
+  overflow: hidden;
 }
 
 .page-header {
+  flex-shrink: 0;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #e5e7eb;
-  position: sticky;
-  top: 0;
   z-index: 10;
 }
 
@@ -403,9 +404,13 @@ onMounted(refresh);
 }
 
 .content-inner {
+  flex: 1;
+  overflow-y: v-bind('groupedReceipts.length > 0 ? "auto" : "hidden"');
+  -webkit-overflow-scrolling: touch;
   max-width: 672px;
+  width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 1rem 120px;
 }
 
 .empty-state {
