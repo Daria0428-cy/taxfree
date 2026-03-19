@@ -1,4 +1,3 @@
-Note: The tool simplified the command to ` rm /Users/ashin/development/taxfree/frontend/src/views/ReceiptScanner.vue && cat << 'EOF' > /Users/ashin/development/taxfree/frontend/src/views/ReceiptScanner.vue
 <template>
   <div class="receipt-scanner-page">
     <!-- 模式选择 -->
