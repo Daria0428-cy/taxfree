@@ -518,8 +518,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0;
-  min-height: 460px;
+  padding: 0.5rem 0;
   overflow: hidden;
   width: 100%;
 }
@@ -527,7 +526,6 @@ onUnmounted(() => {
 .scanner-swiper {
   width: 100%;
   height: 100%;
-  padding: 1rem 0;
 }
 
 .slide-content-wrapper {
@@ -536,12 +534,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 100%;
 }
 
 .code-card-container {
   perspective: 1000px;
-  width: 320px;
-  height: 320px;
+  width: min(80vw, 320px);
+  height: min(80vw, 320px);
   margin-bottom: 1rem;
   cursor: pointer;
   z-index: 10;
@@ -672,10 +671,25 @@ onUnmounted(() => {
 }
 
 .scanner-footer {
-  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(8px);
-  padding: 1rem;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+@media (max-height: 650px) {
+  .shortcuts, .mobile-hint {
+    display: none;
+  }
+  .code-area {
+    padding: 0;
+  }
+  .code-ticket {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .footer-btns {
