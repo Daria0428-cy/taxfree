@@ -287,17 +287,21 @@ onUnmounted(stopScanner);
 
 <style scoped>
 .receipt-input-page {
-  min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(to bottom right, #eff6ff, #f5f3ff, #fdf2f8);
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* 防止整页滚动 */
 }
 
 .page-header {
+  flex-shrink: 0;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #e5e7eb;
   padding: 1rem;
+  z-index: 10;
+}
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -342,6 +346,7 @@ onUnmounted(stopScanner);
   padding: 1.5rem;
   justify-content: center;
   align-items: center;
+  overflow-y: auto; /* 中间区域可独立滚动（如有需要） */
 }
 
 .scan-ui-container {
@@ -551,10 +556,12 @@ onUnmounted(stopScanner);
 }
 
 .bottom-bar {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
   border-top: 1px solid #e5e7eb;
-  padding: 1rem;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  z-index: 100;
 }
 
 .section-label {
