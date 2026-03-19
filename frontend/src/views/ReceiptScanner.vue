@@ -675,78 +675,25 @@ onUnmounted(() => {
 }
 
 .scanner-footer {
-  flex-shrink: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
+  position: fixed; /* 强制吸附在屏幕底部 */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7); /* 加深透明度，防止内容重叠时看不清 */
+  backdrop-filter: blur(15px);
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  z-index: 1000; /* 确保在最顶层 */
+}
+
+.code-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: calc(100px + env(safe-area-inset-bottom)); /* 给底部的固定页脚留出空间 */
+  overflow: hidden;
   width: 100%;
 }
-
-@media (max-height: 650px) {
-  .shortcuts, .mobile-hint {
-    display: none;
-  }
-  .code-area {
-    padding: 0;
-  }
-  .code-ticket {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
-}
-
-.footer-btns {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.btn-nav {
-  flex: 1;
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  border-radius: 12px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.btn-nav:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.btn-nav:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.btn-abnormal {
-  padding: 0.75rem 1.25rem;
-  background: linear-gradient(to right, #ef4444, #f97316);
-  border: none;
-  color: white;
-  border-radius: 12px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.btn-abnormal:hover:not(.disabled):not(:disabled) {
-  filter: brightness(1.1);
-}
-
-.btn-abnormal.disabled,
-.btn-abnormal:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.shortcuts {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  text-align: center;
-}
-</style>
