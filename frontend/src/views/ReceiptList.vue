@@ -14,7 +14,19 @@
             </svg>
           </div>
           <div>
-            <h1 class="title-text">退税小票管理</h1>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h1 class="title-text">退税小票管理</h1>
+              <button 
+                class="btn-refresh-code"
+                @click="forceUpdateCode"
+                title="清除缓存并获取最新代码"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                获取最新代码
+              </button>
+            </div>
             <p class="title-sub">共 {{ receipts.length }} 张小票</p>
           </div>
         </div>
@@ -246,6 +258,28 @@ const refresh = () => {
   owners.value = data.owners;
 };
 
+const forceUpdateCode = () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+      // 清除所有缓存后强制刷新
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          for (const name of names) caches.delete(name);
+        });
+      }
+      ElMessage.success('正在获取最新代码...');
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 500);
+    });
+  } else {
+    window.location.reload(true);
+  }
+};
+
 const formatTime = (ts) => {
   const d = new Date(ts);
   return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
@@ -357,6 +391,35 @@ onMounted(refresh);
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
+}
+
+.btn-refresh-code {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: #2563eb;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-refresh-code:hover {
+  background: rgba(37, 99, 235, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-refresh-code:active {
+  transform: translateY(0);
+}
+
+.btn-refresh-code svg {
+  opacity: 0.8;
 }
 
 .title-sub {
