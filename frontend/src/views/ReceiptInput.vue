@@ -31,19 +31,6 @@
         </div>
         <div v-else class="scan-ui-container">
           <div class="scan-card">
-            <div class="scan-header">
-              <div class="scan-status-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                  <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
-                  <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
-                  <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
-                  <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
-                  <line x1="7" y1="12" x2="17" y2="12"/>
-                </svg>
-              </div>
-              <p class="scan-hint-text">将小票条码对准扫描框</p>
-            </div>
-            
             <div id="qr-reader" class="qr-reader"></div>
 
             <div v-if="ticketNumber" :class="['scanned-result-overlay', { 'is-processing': isPaused }]">
@@ -287,11 +274,15 @@ onUnmounted(stopScanner);
 
 <style scoped>
 .receipt-input-page {
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(to bottom right, #eff6ff, #f5f3ff, #fdf2f8);
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* 防止整页滚动 */
+  overflow: hidden;
 }
 
 .page-header {
@@ -301,7 +292,6 @@ onUnmounted(stopScanner);
   border-bottom: 1px solid #e5e7eb;
   padding: 1rem;
   z-index: 10;
-}
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -343,65 +333,37 @@ onUnmounted(stopScanner);
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto; /* 中间区域可独立滚动（如有需要） */
+  padding: 0 0 calc(150px + env(safe-area-inset-bottom)); /* 避开固定底栏，但不加内边距 */
+  justify-content: stretch;
+  align-items: stretch;
+  overflow: hidden;
 }
 
 .scan-ui-container {
   width: 100%;
-  max-width: 28rem;
+  height: 100%;
 }
 
 .scan-card {
-  background: white;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  background: #000; /* 摄像头背景黑底 */
+  width: 100%;
+  height: 100%;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.scan-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.scan-status-icon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(to bottom right, #3b82f6, #a855f7);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .7; }
-}
-
-.scan-hint-text {
-  font-size: 0.875rem;
-  color: #4b5563;
-  font-weight: 500;
-  margin: 0;
+  position: relative;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .qr-reader {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
+  height: 100% !important;
+  border-radius: 0;
   overflow: hidden;
-  background: #f3f4f6;
+  background: #000;
   position: relative;
-  border: 1px solid #e5e7eb;
+  border: none;
 }
 
 /* 让 html5-qrcode 生成的摄像头区域填满容器 */
@@ -418,16 +380,23 @@ onUnmounted(stopScanner);
 }
 
 .scanned-result-overlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 10;
   padding: 1rem;
-  background: linear-gradient(to right, #eff6ff, #f5f3ff);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
   border: 1px solid #bfdbfe;
-  border-radius: 16px;
+  border-radius: 20px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   transition: all 0.3s ease;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .scanned-result-overlay.is-processing {
@@ -502,7 +471,7 @@ onUnmounted(stopScanner);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem calc(180px + env(safe-area-inset-bottom));
 }
 
 .scan-error, .manual-box {
@@ -556,12 +525,17 @@ onUnmounted(stopScanner);
 }
 
 .bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
   border-top: 1px solid #e5e7eb;
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  z-index: 100;
+  z-index: 1000;
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.05); /* 向上增加投影，增强“悬浮感”，提示用户下面还有内容 */
 }
 
 .section-label {
@@ -575,8 +549,12 @@ onUnmounted(stopScanner);
   display: flex;
   gap: 0.75rem;
   overflow-x: auto;
-  padding: 0.25rem 0.25rem 0.75rem;
-  scroll-behavior: smooth;
+  overflow-y: hidden;
+  padding: 0.5rem 0.25rem 1rem;
+  margin: -0.25rem -1rem 0; /* 负边距让滚动条可以撑满左右边缘，增加视觉舒适度 */
+  padding-left: 1rem; /* 配合负边距，保持内部元素对齐 */
+  padding-right: 1rem;
+  -webkit-overflow-scrolling: touch; /* 保证移动端滑动顺滑 */
 }
 
 .scroll-hide::-webkit-scrollbar {
