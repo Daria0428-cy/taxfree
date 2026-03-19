@@ -1,4 +1,4 @@
-Note: The tool simplified the command to ` cat << 'EOF' > /Users/ashin/development/taxfree/frontend/src/views/ReceiptScanner.vue
+Note: The tool simplified the command to ` rm /Users/ashin/development/taxfree/frontend/src/views/ReceiptScanner.vue && cat << 'EOF' > /Users/ashin/development/taxfree/frontend/src/views/ReceiptScanner.vue
 <template>
   <div class="receipt-scanner-page">
     <!-- 模式选择 -->
@@ -603,768 +603,443 @@ onUnmounted(() => {
 }
 </style>
 EOF
-git add frontend/src/views/ReceiptScanner.vue && git commit -m "fix(scanner): clean overwrite to fix corrupted template tags" && git push origin master`, and this is the output of running that command instead:
-ashin@ashindeMacBook-Pro taxfree %  cat << 'EOF' > /Users/ashin/development/taxf
-ree/frontend/src/views/ReceiptScanner.vue
-heredoc> <template>
-heredoc>   <div class="receipt-scanner-page">
-heredoc>     <!-- 模式选择 -->
-heredoc>     <div v-if="includeUnassigned === null" class="mode-dialog">
-heredoc>       <div class="mode-card">
-heredoc>         <div class="mode-icon">
-heredoc>           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32
-" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-heredoc>             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-heredoc>           </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选择扫描模式</h2>
-heredoc>         <p class="mode-desc">
-heredoc>           <template v-if="ownerId">
-heredoc>             正在为 <span class="highlight">{{ ownerName }}</span> 准备 
-扫描队列
-heredoc>           </template>
-heredoc>           <template v-else>
-heredoc>             正在为未指定持有人准备扫描队列
-heredoc>           </template>
-heredoc>         </p>
-heredoc>         <p v-if="ownerId" class="mode-hint">是否包含"未指定持有人"的小 
-票？</p>
-heredoc>         <div class="mode-btns">
-heredoc>           <t<template>
-heredoc>   <div class="receipt-scanner-page">
-heredoc>     <!-- 模式选择 -->
-heredoc>     <div v-nf  <div clru    <!-- 模式选择 -->
-heredoc>     <div <ffffffff><ffffffff>    <div v-if="includeUn        <div class
-="mode-card">
-heredoc>         <div class="mode-icon">
-heredoc> k=        <div class="mode-ic
-heredoc>             <svg xmlns="http://wNa            <polygon points="13 2 3 1
-4 12 14 11 22 21 10 12 10 13 2"/>
-heredoc>           </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选择扫nd          </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选择n>        </div>
-heredoc> mp        <h2 c          <p class="mode-desc">
-heredoc>           <template v-i'/          <template v-if="ow</            正在
-为 <span class=<!          </template>
-heredoc>           <template v-else>
-heredoc>             正在为未指定持有 <div class="mode-card e            正在为 
-未<ffffffff>e          </template>
-heredoc>         </p>
-heredoc>         <p v-if="owne/h        </p>
-heredoc> >请先<ffffffff>       <p <ffffffff><ffffffff>        <div class="mode-b
-tns">
-heredoc>           <t<template>
-heredoc>   <div class="receipt-scanner-page"><ffffffff>         <t<template>
-heredoc>   <div     <div class="receipt<ffffffff><ffffffff>   <!-- 模式选择 -->
-heredoc>     <div       <div v-nf  <div clr-ma    <div <ffffffff><ffffffff>    <
-div v-if="includeUn        <div           <div class="modck" @click="$router.pus
-h('/')">
-heredoc>             k=        <div class="mode-ic
-heredoc> 20            <svg xmlns="http0"          </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选择扫nd          </svg>
-heredoc>         </di="        </div>
-heredoc> 12        <h2 c          </div>
-heredoc>         <h2 class="mode-title">选择n>   >
-heredoc>         <h2 cutmp        <h2 c          <p class="mode-desc">
-heredoc>                  <template v-i'/          <template cl          <templa
-te v-else>
-heredoc>             正在为未指定持有 <div class="mode-card e            正在为<
-ffffffff>d            正在为未<ffffffff>g        </p>
-heredoc>         <p v-if="owne/h        </p>
-heredoc> >请先<ffffffff>       <p <ffffffff><ffffffff>        <div class="mode-b
-tns">
-heredoc>      rr        <p &&>请先<ffffffff>       <p <ffffffff><ffffffff>      
-  <diver          <t<template>
-heredoc>   <div class="receipt-scanner00  <div class="receiptgh  <div     <div c
-lass="receipt<ffffffff><ffffffff>   <!-- 模式选择 -->
-heredoc> r"     <div       <div v-nf  <div clr-ma    <div <ffffffff><ffffffff>  
-  <div18            k=        <div class="mode-ic
-heredoc> 20            <svg xmlns="http0"          </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选e 20            <svg xmlns="http0"7"/>
+git add frontend/src/views/ReceiptScanner.vue && git commit -m "fix(scanner): final clean overwrite to fix corrupted template tags" && git push origin master`, and this is the output of running that command instead:
+ashin@ashindeMacBook-Pro taxfree %  rm /Users/ashin/development/taxfree/frontend
+/src/views/ReceiptScanner.vue && cat << 'EOF' > /Users/ashin/development/taxfree
+/frontend/src/views/ReceiptScanner.vue
+cmdand heredoc> <template>
+cmdand heredoc>   <div class="receipt-scanner-page">
+cmdand heredoc>     <!-- 模式选择 -->
+cmdand heredoc>     <div v-if="includeUnassigned === null" class="mode-dialog">
+cmdand heredoc>       <div class="mode-card">
+cmdand heredoc>         <div class="mode-icon">
+cmdand heredoc>           <svg xmlns="http://www.w3.org/2000/svg" width="32" hei
+ght="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 
-heredoc>              </div>
-heredoc>         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>     
-   </di="        </div>
-heredoc> 12        <h2 c          </d  12        <h2 c          </ec        <h2 
-class="mode-title":s        <h2 cutmp        <h2 c          <pee                
- <template v-i'/          <template cl       c            正在为未指定持有 <div 
-class="mode-card e            正在<ffffffff>r        <p v-if="owne/h        </p>
+cmdand heredoc>             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 1
+3 2"/>
+cmdand heredoc>           </svg>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 class="mode-title">选择扫描模式</h2>
+cmdand heredoc>         <p class="mode-desc">
+cmdand heredoc>           <template v-if="ownerId">
+cmdand heredoc>             正在为 <span class="highlight">{{ ownerName }}</span
+> 准备扫描队列
+cmdand heredoc>           </template>
+cmdand heredoc>           <template v-else>
+cmdand heredoc>             正在为未指定持有人准备扫描队列
+cmdand heredoc>           </template>
+cmdand heredoc>         </p>
+cmdand heredoc>         <p v-if="ownerId" class="mode-hint">是否包含"未<template
+>
+cmdand heredoc>   <div class="receipt-scanner-page">
+cmdand heredoc>     <!-- 模式选择 -->
+cmdand heredoc>     <div v-if="includeUnassigned === null" class="mode-dialog">
+cmdand heredoc>       <div class="mode-cnf  <div clru    <!-- 模式选择 -->
+cmdand heredoc>     <div <ffffffff><ffffffff>    <div v-if="includeUn        <di
+v class="mode-card"ton class="btn-mode outline" @click=        <div class="mode-
+ico            <svg xmlns="http://wNa            <polygon points="13 2 3 14 12 1
+4 11 22 21 10 12 10 13 2"/>
+cmdand heredoc>           </svg>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 class="mode-title">选择<ffffffff>nd          </svg>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>        </div>
+cmdand heredoc> mp        <h2 c          <p class="mode-desc">
+cmdand heredoc>           <template v-i'/          <template v-if="ow</         
+   正在为 <span class=<!          </template>
+cmdand heredoc>           <template v-else>
+cmdand heredoc>             正在为未<ffffffff>g">
+cmdand heredoc>       <          <template  e            正在为未<ffffffff>e    
+      </template>
+cmdand heredoc>         </p>
+cmdand heredoc>         <p v-if="owne/h        </p>
+cmdand heredoc>        <ffffffff>       <p <ffffffff><ffffffff>  <div class="rec
+eipt-scanner-page">
+cmdand heredoc>     <!-- 模式选择 -->
+cmdand heredoc>     <d$r    <!-- 模式选择 -->
+cmdand heredoc>     <div on    <div v-if="    </div>
+cmdand heredoc>       <div class="mode-cnf  <div clru    <!-- 模式选择 -->as    
+<div <ffffffff><ffffffff>    <div v-if="includeUn        <div class="mode-c     
+       </svg>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 class="mode-title">选择<ffffffff>nd          </svg>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>        </div>
+cmdand heredoc> mp        <h2 c          <p class="mode-desc">
+cmdand heredoc>           <template v-i'/="        </ y2="12        <h2 c       
+   </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>   >
+cmdand heredoc>         <h2 cut            </budimp        <h2 c          <p cla
+ss=      class="owner-badge">
+cmdand heredoc>               <span cl          <template v-else>
+cmdand heredoc>             正在为未<ffffffff>g">
+cmdand heredoc>       <          <template  e            正在为<ffffffff>d      
+      正在为未<ffffffff>g      <          <template  e          </p>
+cmdand heredoc>         <p v-if="owne/h        </p>
+cmdand heredoc>        <ffffffff>       <p <ffffffff><ffffffff>  <divrr        <
+p &&       <ffffffff>       <p <ffffffff><ffffffff>  <div classer    <!-- 模式选
+择 -->
+cmdand heredoc>     <d$r    <!-- 模式选择 -vg    <d$r  6" height="16" v    <div 
+on    <div v-if="    </tr      <div class="mode-cnf  <div cl>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 class="mode-title">选择<ffffffff>nd          </svg>
+cmdand heredoc>         </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>        </div>"9        <h2 c"1        </di
+v>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>   />        <h2 csv            </bu<ffffff
+ff>p        <h2 c          <p class<ffffffff><ffffffff>         <template v-i'/=
+"        </ y2="12 ea        <h2 clas<ffffffff>
+cmdand heredoc>             </button>   >
+cmdand heredoc>         <h2 cut            <:s            </bu1"        <h2 cut 
+        ee              <span cl          <template v-else>
+cmdand heredoc>             正在为未<ffffffff>g">
+cmdand heredoc>       <                  正在为未<ffffffff>g">
+cmdand heredoc>       <          er      <          <template  e          <p v-i
+f="owne/h        </p>
+cmdand heredoc>        <ffffffff>       <p <ffffffff><ffffffff>  <divrr        <
+p &&       <ffffffff>       <p <ffffffff><ffffffff>  <div classer    <!-- er    
+   <ffffffff>       <p <ffffffff><ffffffff>  <divrr    e-    <d$r    <!-- 模式选
+择 -vg    <d$r  6" height="16" v    <div on    <div v-if="    </tr      <divco  
+      <= 'qr' }]">
+cmdand heredoc>                     <!-- 条形码 -->
+cmdand heredoc>                     <div class="code-card-front">
+cmdand heredoc>                             <h2 cf=        </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>             <h2 cif            </buba     
+   <h2 clas<ffffffff>
+cmdand heredoc>             </button>   />        <h2 csv                       
+ <!            </button>   >
+cmdand heredoc>         <h2 cut            <:s            </bu1"        <h2 cut 
+        ee              <span cl          <template v-else>
+cmdand heredoc>                   <h2 cut          '            正在为未<fffffff
+f>g">
+cmdand heredoc>       <                  正在为未<ffffffff>g">
+cmdand heredoc>       <          er      <          <template          <        
+          正<ffffffff>i      <          er      <          <templ>
+cmdand heredoc>        <ffffffff>       <p <ffffffff><ffffffff>  <divrr        <
+p &&       <ffffffff>       <p <ffffffff><ffffffff>  <div classer    <--        
+            <!-- 条形码 -->
+cmdand heredoc>                     <div class="code-card-front">
+cmdand heredoc>                             <h2 cf=        </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>             </button>             <h2 cif            </buba     
+   <h2 clas<ffffffff>
+cmdand heredoc>             </busv                    <div class="code-0        
+                     <rrentColor" stroke-wi        <h2 clas<ffffffff>
+cmdand heredoc>             </button>         4M            <4M15  v14M17 5v14"/
+>
+cmdand heredoc>               </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             </bu        <h2 cut            <:s            </bu1"
+        <h2 cut         ee              <sp }                  <h2 cut          
+'            正在为未<ffffffff>g">
+cmdand heredoc>       <                  正在为未<ffffffff>g">
+cmdand heredoc>       <    ei      <                  正在为未<ffffffff>g">
+cmdand heredoc>       <          er  ro      <          er      <          <temp
+ly=       <ffffffff>       <p <ffffffff><ffffffff>  <divrr        <p &&       <f
+fffffff>       <p <ffffffff><ffffffff>  <div classer    <--                    <
+!-- 条形码 -x=                    <div class="code-card-front">
+cmdand heredoc>                             <h2 cf=        </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>      h3                            <h2 cf=        </二<ffffffff>
+       <h2 clas<ffffffff>
+cmdand heredoc>             </button>                       </bubi            </
+busv                    <div class="code-0                   ca            </but
+ton>         4M            <4M15  v14M17 5v14"/>
+cmdand heredoc>               </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             ="              </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             </bu                   条<ffffffff><ffffffff>       
+    </bu              <                  正在为未<ffffffff>g">
+cmdand heredoc>       <    ei      <                  正在为未<ffffffff>g">
+cmdand heredoc>       <          er  ro      <          er      <          <temp
+ly=              <    ei      <                  <ffffffff>         <          e
+r  ro      <          er      <       '                            <h2 cf=      
+  </div>
+cmdand heredoc>         <h2 clas<ffffffff>
+cmdand heredoc>      h3                            <h2 cf=        </二<ffffffff>
+       <h2 clas<ffffffff>
+cmdand heredoc>             </button>                       </bubi            </
+busv                    <div cla/b        <h2 clas<ffffffff>
+cmdand heredoc>      h3                       tc     h3         <ffffffff><fffff
+fff>           </button>                       </bubi            </busv         
+            </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             ="              </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             </bu                   条<ffffffff><ffffffff>       
+    </bu              <              sa              条<ffffffff>l            ="
+        Sw              条形码
+cmdand heredoc>          po            </bu      t       <    ei      <         
+         正在为未<ffffffff>g">
+cmdand heredoc>       <          er  ro      <          er      <  ec      <    
+      er  ro      <          er      <      Id        <h2 clas<ffffffff>
+cmdand heredoc>      h3                            <h2 cf=        </二<ffffffff>
+       <h2 clas<ffffffff>
+cmdand heredoc>             </button>                       </bubi            </
+busv                    <div cla/b        <h2 clas<ffffffff>
+cmdand heredoc>      h3        ns    rcodeRefs = re            </button>        
+               </bubi            </busv      {     h3                       tc  
+   h3         <ffffffff><ffffffff>           </button>                       </b
+ubi            el;               条形码
+cmdand heredoc>             ="              </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             </bu                   条<ffffffff><ffffffff>       
+    </bu   nd            ="        nd              条形码
+cmdand heredoc>          ns            </bu      ns         po            </bu  
+    t       <    ei      <                  正在为未<ffffffff>g">
+cmdand heredoc>       <          er  ro      <          er      <  ec      <    
+ '      <          er  ro      <          er      <  ec      <          er  ro  
+    <      rn      h3                            <h2 cf=        </二<ffffffff>  
+     <h2 clas<ffffffff>
+cmdand heredoc>             </button>                       </bubi =            
+ </button>                       </bubi            </busv      =     h3        n
+s    rcodeRefs = re            </button>                       </bubi           
+ </busv      {    en            ="              </svg>
+cmdand heredoc>               条形码
+cmdand heredoc>             </bu                   条<ffffffff><ffffffff>       
+    </bu   nd            ="        nd              条形码
+cmdand heredoc>          ns            </bu      ns         po            </bu  
+    t       < );              条形码
+cmdand heredoc>          pt            </bu                 ns            </bu  
+    ns         po            </bu      t       <    ei      <                  <
+ffffffff>
+cmdand heredoc>       <          er  ro      <          er      <  ec      <    
+ '      <          er  ro      <          er      <  ec                    </but
+ton>                       </bubi =             </button>                       
+</bubi            </busv      =     h3        ns    rcodeRefs = re            </
+button>                       </bubi            </busv 3              条形码
+cmdand heredoc>             </bu                   条<ffffffff><ffffffff>       
+    </bu   nd            ="        nd              条形码
+cmdand heredoc>          ns            </bu      ns         po            </bu  
+    t       < );              条形码
+cmdand heredoc>          pt            </bu           in            </bu      ==
+         ns            </bu      ns         po            </bu      t       < );
+              条形码
+cmdand heredoc>      In         pt            </bu                 ns           
+ </bu      ns         po            </bu     en      <          er  ro      <   
+       er      <  ec      <     '      <          er  ro      <          er     
+ <  ec                    </but=             </bu                   条<ffffffff>
+<ffffffff>           </bu   nd            ="        nd              条形码
+cmdand heredoc>          ns            </bu      ns         po            </bu  
+    t       < );              条形码
+cmdand heredoc>          pt            </bu           in            </bu      ==
+         ns            </bu      ns         po            </bu      t       < );
+              条形码re         ns            </bu      ns         po            
+</bu      t       < );              条形码
+cmdand heredoc>      il         pt            </bu           in            </bu 
+     ==         ns            </bu      ns          In         pt            </b
+u                 ns            </bu      ns         po            </bu     en  
+    <          er  ro      <          er      <  ec  do         ns            </
+bu      ns         po            </bu      t       < );              条形码
+cmdand heredoc>          pt            </bu           in            </bu      ==
+         ns            </bu      ns         po            </bu      t       < );
+              条形码re         ns            </bu      ns         po            
+</bu      t       < );             on         pt            </bu           in   
+         </bu      ==     , 255, 255, 0.95);
+cmdand heredoc>   backdrop-filte     il         pt            </bu           in 
+           </bu      ==         ns            </bu      ns          In         p
+t            </bu                 ns            </bu      ns         po         
+   </bu     en      <          er  ro      <          er      <r-         pt    
+        </bu           in            </bu      ==         ns            </bu    
+  ns         po            </bu      t       < );              条形码re         
+ns            </bu      ns         po            </bu      t       < );         
+    on         pt            </bu           in            </bu      ==     , 255
+, 255, 0.95);
+cmdand heredoc>   backdrop-filte     il      ma  backdrop-filte     il         p
+t            </bu           in            </bu      ==         ns            </b
+u      ns          In         pt            </bu                 ns            <
+/bu      ns         po            </bu     en      <          er  ro      <     
+     er      <r-         pt            </bu           in            </bu ne;
+cmdand heredoc>     backdrop-filte     il      ma  backdrop-filte     il        
+ pt            </bu           in            </bu      ==         ns            <
+/bu      ns          In         pt            </bu                 ns           
+ </bu      ns         po            </bu     en      <          er  ro      <   
+       er      <r-         pt            </bu           in            </bu ne;
+cmdand heredoc>     backdrop-filte     il      ma  backdrop-filte     il        
+ pt            </bu           in            </bu      ==         ns            <
+/bu      ns          In         pt            </bu                 ns           
+ </bu      ns         po          ,     backdrop-filte     il      ma  backdrop-
+filte     il         pt            </bu           in            </bu      ==    
+     ns            </bu      ns          In         pt            </bu          
+       ns            </bu      ns         po            </bu     en      <      
+    er  ro      <          er      <r-         pt            </bu           in  
+          </bu       backdrop-filte     il      ma  backdrop-filte     il       
+  pt            </bu           in            </bu      ==         ns            
+</bu      ns          In         pt            </bu                 ns          
+  </bu      ns         po          ,     backdrop-filte     il      ma  backdrop
+-filte     il         pt            </bu           in            </bu      ==   
+display: flex;
+cmdand heredoc>   align-items: center;
+cmdand heredoc>   justify-content: center;
+cmdand heredoc>   gap: 0.5rem;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-area {
+cmdand heredoc>   flex: 1;
+cmdand heredoc>   display: flex;
+cmdand heredoc>   flex-direction: column;
+cmdand heredoc>   align-items: center;
+cmdand heredoc>   justify-content: center;
+cmdand heredoc>   padding: 1rem 0 120px;
+cmdand heredoc>   overflow: hidden;
+cmdand heredoc>   width: 100%;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .scanner-swiper {
+cmdand heredoc>   width: 100%;
+cmdand heredoc>   height: 100%;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .slide-content-wrapper {
+cmdand heredoc>   display: flex;
+cmdand heredoc>   flex-direction: column;
+cmdand heredoc>   align-items: center;
+cmdand heredoc>   justify-content: center;
+cmdand heredoc>   width: 100%;
+cmdand heredoc>   height: 100%;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-card-container {
+cmdand heredoc>   perspective: 1000px;
+cmdand heredoc>   width: min(60vh, 80vw, 300px);
+cmdand heredoc>   height: min(60vh, 80vw, 300px);
+cmdand heredoc>   margin-bottom: 1rem;
+cmdand heredoc>   cursor: pointer;
+cmdand heredoc>   z-index: 10;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-card-inner {
+cmdand heredoc>   position: relative;
+cmdand heredoc>   width: 100%;
+cmdand heredoc>   height: 100%;
+cmdand heredoc>   transition: transform 0.6s;
+cmdand heredoc>   transform-style: preserve-3d;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-card-inner.flipped {
+cmdand heredoc>   transform: rotateY(180deg);
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-card-front, .code-card-back {
+cmdand heredoc>   position: absolute;
+cmdand heredoc>   width: 100%;
+cmdand heredoc>   height: 100%;
+cmdand heredoc>   backface-visibility: hidden;
+cmdand heredoc>   background: white;
+cmdand heredoc>   border-radius: 24px;
+cmdand heredoc>   display: flex;
+cmdand heredoc>   alig  align-itemser  justify-content: cece  gap: 0.5rem;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-a
+cmdand heredoc> .}
+cmdand heredoc> 
+cmdand heredoc> .code-areak {
+cmdand heredoc>    flex: 1;
+cmdand heredoc>  r  displ180d  fl
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .code-car  align-items: center;
+cmdand heredoc>  rd  justify-content: cewi  padding: 1rem 0 120px;
+cmdand heredoc> 10  overflow: hidden;
+cmdand heredoc>   win  width: 100%;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> {
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .scanner-s1.25r  width:nt-weight:  height: 100: }
+cmdand heredoc> 
+cmdand heredoc> .slide-argin-top  display: flex;
+cmdand heredoc>   flex-c  flex-directiosp  align-items: center;
+cmdand heredoc>   r  justify-content: cepa  width: 100%;
+cmdand heredoc>   heightdius: 16px;
+cmdand heredoc>   gap: }
+cmdand heredoc> 
+cmdand heredoc> .code-card-top:   perspective: 1000px{
+cmdand heredoc>   width: min(60vh, 80    height: min(60vh, 80vw, 300pxno  margin
+-bottom: 1rem;
+cmdand heredoc>   cursor: c  cursor: pointer;
+cmdand heredoc>   25  z-index: 10;
+cmdand heredoc> }
+cmdand heredoc> iz}
+cmdand heredoc> 
+cmdand heredoc> .code-card curs  position: relatsw  width: 100%;
+cmdand heredoc>   heiba  hround: white  transition: 3a  transform-style: preserv
+e--s}
+cmdand heredoc> 
+cmdand heredoc> .code-card-inner.flipped {
+cmdand heredoc> 5, 25  transform: rotateY(180dp:}
+cmdand heredoc> 
+cmdand heredoc> .code-card-front, .code-c  pos  position: absolute;
+cmdand heredoc>   width: 100 0  width: 100%;
+cmdand heredoc>   heigr  height: 100 0  backface-visbackdrop-filter: blur(15px);
 
-heredoc> >请先<ffffffff>       <p <ffffffff><ffffffff>        <div class="mode-b
-tns">
-heredoc>      rr        <p &&>请先<ffffffff>    <d>请先<ffffffff>       <p <ffff
-ffff><ffffffff>        <div       rr        <p &&>请先<ffffffff>       <p <fffff
-fff><ffffffff>        <dk=  <div class="receipt-scanner00  <div class="receiptgh
-  <div     <div class="d:r"     <div       <div v-nf  <div clr-ma    <div <fffff
-fff><ffffffff>    <div18            k=        <div class="mode-ic
-heredoc> 20     ">20            <svg xmlns="http0"          </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选e 2<d        </div>
-heredoc>         <h2 class="mode-title"><ffffffff>r        <h2 c               <
-/div>
-heredoc>         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>     
-         <div class12        <h2 c          </d  12        <h2 c          </ec  
-      <h2 classde>请先<ffffffff>       <p <ffffffff><ffffffff>        <div class
-="mode-btns">
-heredoc>      rr        <p &&>请先<ffffffff>    <d>请先<ffffffff>       <p <ffff
-ffff><ffffffff>        <div       rr        <p &&>请先<ffffffff>       <p <fffff
-fff><ffffffff>        <dk=  <div class="receipt-scanner00  <div class="receiptgh
-  <div     <div class="d:r"     <div       <div v-nf  <div clr-ma    <div <fffff
-fff><ffffffff>          rr        <p &&>请先<ffffffff>    <d>请先<ffffffff>     
- s=20     ">20            <svg xmlns="http0"          </svg>
-heredoc>         </div>
-heredoc>         <h2 class="mode-title">选e 2<d        </div>
-heredoc>         <h2 class="mode-title"><ffffffff>r        <h2 c               <
-/div>
-heredoc>         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>     
-         <div class12        <h2 c          </d  12     r"        </div>
-heredoc>         <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 cl
-ass="mode-title"><ffffffff>r        <h2 c               <h2 class="mode-title"> 
-齓        <h2 c<ffffffff><ffffffff>              <div       rr        <p &&>请先
-<ffffffff>    <d>请先<ffffffff>       <p <ffffffff><ffffffff>        <div       
-rr        <p &&>请先<ffffffff>       <p <ffffffff><ffffffff>        <dk=  <div c
-lass="receipt-scanner00  <div class="receiptgh  <div     <div class=""         <
-/div>
-heredoc>         <h2 class="mode-title">选e 2<d        </div>
-heredoc>         <h2 class="mode-title"><ffffffff>r        <h2 c               <
-/div>
-heredoc>         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>     
-         <div class12        <h2 c          </d  12     r"        </div>
-heredoc>         <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 cl
-ass="mode-title"><ffffffff>r        <h2 c           <h2 c          <h2 class="mo
-de-title"><ffffffff>r        <h2 c     as        <h2 class="mode-title">齓      
-  <h2 c<ffffffff><ffffffff>              <div          <h2 class="mode-title">选
-e 2<d  v1        <h2 cv1        <h2 class="mode-title"><ffffffff>r        <h2 c 
-              <h2 c          <h2 class="mode-title">选e 2<d        </div>
-heredoc>         <h2 class="mode-title"><ffffffff>r        <h2 c               <
-/div>
-heredoc>         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>     
-         <div class12        <h2 c          </d  12     r"        </div>
-heredoc>         <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 cl
-ass="mode-title"><ffffffff>r        <h2 c           <h2 c          <h2 class="mo
-de-ti '        <h2 class="mode-title"><ffffffff>r        <h2 c     
-heredoc>          <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>    
-          <div==        <h2 class="mode-title">选e 2<d  v1        <h2 cv1       
- <h2 class="mode-title"><ffffffff>r        <h2 c           <h2 c              <h
-2 class="mode-title"><ffffffff>r        <h2 c               </div>
-heredoc>         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>     
-         <div class12        <h2 c          </d  12     r"        </div>
-heredoc>         <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 cl
-ass="mode-title"><ffffffff>r        <h2 c           <h2 c          <h2 class="mo
-de-ti '        <h2 class="mode-title"><ffffffff>r        <h2 c     
-heredoc>          <h2 class="mode-mp        <h2 class="mode-title">齓        <h2
- c<ffffffff><ffffffff>              <div {        <h2 class="mode-title">选e 2<d
-  v1        <h2 cv1        <h2 class="mode-title"><ffffffff>r        <h2= comput
-ed(() => route.p         <h2 class="mode-title">齓        <h2 c<ffffffff><ffffff
-ff>              <div==        <h2 class="mode-title">选e 2<d  v1        <h2 cv1
-        <h2 class="mode-title"><ffffffff>r        <h2 c           <h2 c         
-   b        <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>          
-    <div class12        <h2 c          </d  12     r"        </div>
-heredoc>         <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 cl
-ass="mode-title"><ffffffff>r        <h2 c           <h2 c          <h2 cle      
-   <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 class="mode-titl
-e"><ffffffff>r        <h2 c           <h2 c    =>         <h2 class="mode-mp    
-    <h2 class="mode-title">齓        <h2 c<ffffffff><ffffffff>              <div
- {        <h2 class="mode-title">选e 2<d  v1        <h2 cv1        <h2 class="mo
-de-title"><ffffffff>r        <h2= c<ffffffff><ffffffff>       <h2 class="mode-ti
-tle">选e 2<d  v1        <h2 cv1        <h2 class="mode-title"><ffffffff>r       
- <h2 c           <h2 c          <h2 cle         <h2 class="mode-title">选e 2<d  
-v1        <h2 cv1        <h2 class="mode-title"><ffffffff>r        <h2 c        
-   <h2 c    =>         <h2 class="mode-mp        <h2 class="mode-title">齓      
-  <h2 c<ffffffff><ffffffff>              <div {        <h2 class="mode-title">选
-e 2<d  v1        <h2 cv1        <h2 class="mode-title"><ffffffff>r        <h2= c
-<ffffffff><ffffffff>       <h2 class="mode-title">选e 2<d  v1        <h2 cv1    
-    <h2 class="mode-ue = receipts.value.map((r) =>
-heredoc>     r.id === currentReceipt.value.id ? { ...r, isAbnormal: true } : r
-heredoc>   );
-heredoc>   if (currentIndex.value < receipts.value.length - 1) {
-heredoc>     currentIndex.value++;
-heredoc>   }
-heredoc> };
-heredoc> 
-heredoc> const generateCodes = async () => {
-heredoc>   if (receipts.value.length === 0) return;
-heredoc>   await nextTick();
-heredoc>   receipts.value.forEach(async (receipt, index) => {
-heredoc>     try {
-heredoc>       const qrEl = qrRefs.value[index];
-heredoc>       const barcodeEl = barcodeRefs.value[index];
-heredoc>       if (qrEl) await QRCode.toCanvas(qrEl, receipt.ticketNumber, { wid
-th: 400, margin: 2 });
-heredoc>       if (barcodeEl) JsBarcode(barcodeEl, receipt.ticketNumber, { forma
-t: 'CODE128', width: 3, height: 150, displayValue: true, fontSize: 20, margin: 1
-0 });
-heredoc>     } catch (err) { console.error(err); }
-heredoc>   });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes, { deep: true });
-heredoc> watch(includeUnassigned, (val) => { if (val !== null) generateCodes(); 
-});
-heredoc> 
-heredoc> const handleKeyDown = (e) => {
-heredoc>   if (includeUnassigned.value === null || receipts.value.length === 0) 
-return;
-heredoc>   if (e.key === 'ArrowLeft' && currentInd    r.id === currentReceiptva 
- );
-heredoc>   if (currentIndex.value < receipts.value.length - 1) {
-heredoc>     curei  i.v    currentIndex.value++;
-heredoc>   }
-heredoc> };
-heredoc> 
-heredoc> const generateCodes y   }
-heredoc> };
-heredoc> 
-heredoc> const generateCoac};ar
-heredoc> ) {  if (receipts.value.length === 0)e(  await nextTick();
-heredoc>   receipts.value.forE=   receipts.value.f);    try {
-heredoc>       const qrEl = qrRefs.value[index];
-heredoc>  si      coue      const barcodeEl = barcodeRefs.vaDa      if (qrEl) aw
-ait QRCode.toCanvas(qrEl, recerI      if (barcodeEl) JsBarcode(barcodeEl, receip
-t.ticketNumber, { format: 'CODE128', width:  f    } catch (err) { console.error(
-err); }
-heredoc>   });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes, { deep: true });
-heredoc> watch(includeUnassigned, (val) => { if (vowner);
-heredoc>       fi  });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes,  };
-heredoc> 
-heredoc>  }
-heredoc>   rwatch(includeUnassigned, (val) => { if (val !=in
-heredoc> const handleKeyDown = (e) => {
-heredoc>   if (includeUnassigned.value === null ||  c  if (includeUnassigned.val
-ueer  if (e.key === 'ArrowLeft' && currentInd    r.id === currentReceiptva  );
-heredoc>   );  if (currentIndex.value < receipts.value.length - 1) {
-heredoc>     curei  i.v   wn    curei  i.v    currentIndex.value++;
-heredoc>   }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> const generateCodes y   }
-heredoc> };
-heredoc> 
-heredoc> ll};va
-heredoc> lab};
-heredoc> 
-heredoc> const generateCoac};le
-heredoc> -di) {  if (receipts.valck  receipts.value.forE=   receipts.value.f);  
-  try {
-heredoc>     ,       const qrEl = qrRefs.value[index];
-heredoc>  si      co
-heredoc> } si      coue      const barcodeEl = b f  });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes, { deep: true });
-heredoc> watch(includeUnassigned, (val) => { if (vowner);
-heredoc>       fi  });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes,  };
-heredoc> 
-heredoc>  }
-heredoc>   rwatch(includeUnassigned, (val) => { if (val !=in
-heredoc> const handleKeyDown = t};
-heredoc> 
-heredoc> al
-heredoc> gn:watch(includeUnassigned, (val) => { if (vowner0,      fi  });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes: };
-heredoc> 
-heredoc> watch(reground
-heredoc>  }
-heredoc>   rwatch(includeUnassigned, (, # 85const handleKeyDown = (e) => {
-heredoc>   if (includeUnassiig  if (includeUnassigned.valuent  );  if (currentIn
-dex.value < receipts.value.length - 1) {
-heredoc>     curei  i.v   wn    curei  i.v    currentIndex.value++;
-heredoc>   }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i.v   wn    curei  i.v    currentIndex.value++;bk  }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> const generateCodes y   }
-heredoc> };
-heredoc> 
-heredoc> ll}
-heredoc> .};de
-heredoc> des};
-heredoc> 
-heredoc> const in
-heredoc>  {
-heredoc> };
-heredoc> 
-heredoc> ll};va
-heredoc> lab};
-heredoc> 
-heredoc> const in
-heredoc>  0 lab};5r
-heredoc> con  f-di) {  if (receipts.
-heredoc> 
-heredoc>     ,       const qrEl = qrRefs.value[index];
-heredoc>  si      co
-heredoc> } si      coue     we si      co
-heredoc> } si      coue      const barcod
-heredoc>  } si      fl};
-heredoc> 
-heredoc> watch(receipts, generateCodes, { deep: tr}
-heredoc> 
-heredoc> .btwatch(includeUnassigned, (val) => { if (vowneriu      fi  });
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes 5};
-heredoc> 
-heredoc> watch(re: 
-heredoc> one
-heredoc>  }
-heredoc>   rwatch(iinter;
-heredoc> }
-heredoc> 
-heredoc> .btn-mode.pr maconst handleKeyDown = t};
-heredoc> 
-heredoc> al
-heredoc> gn:watch(includeUb82f6
-heredoc> al
-heredoc> gn:watch(includeUnaste;g}
-heredoc> };
-heredoc> 
-heredoc> watch(receipts, generateCodes: };
-heredoc> 
-heredoc> watch(reground
-heredoc>  }
-heredoc>   rwate5
-heredoc> 7eb
-heredoc> watch(reground
-heredoc>  }
-heredoc>   rwatch(incl.ghost {
-heredoc>   backgro nd  if (includeUnassiig  if (includeUnassigned.valuent  );  i
-f (cu d    curei  i.v   wn    curei  i.v    currentIndex.value++;
-heredoc>   }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i.v   wn sh  }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i.v   wn    cur;
-heredoc> };ba
-heredoc> kdr};
-heredoc> 
-heredoc> constt b
-heredoc> ur(};
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> const generateCodes y   }
-heredoc> };
-heredoc> 
-heredoc> ll}
-heredoc> .};de
-heredoc> des};
-heredoc> 
-heredoc> cost
-heredoc> fy-};
-heredoc> 
-heredoc> const pa
-heredoc> e-b};
-heredoc> 
-heredoc> ll}
-heredoc> .};de
-heredoc> des};
-heredoc> 
-heredoc> con 1
-heredoc> x s.}iddes}a(
-heredoc> con 25 {
-heredoc> };
-heredoc> 
-heredoc>  0.1)
-heredoc> 
-heredoc>   lab};iz
-heredoc> con bo 0 lab}x;con  f-diba
-heredoc>     ,       const qrEl = background: transparent;
-heredoc>   border: none;
-heredoc>   color:} si      cu} si      coue      const barcor  } si      fl};
-heredoc> 
-heredoc> watch(receiptser
-heredoc> watch(receiptor: white;
-heredoc>   font-weight: 600;
-heredoc>   margin: 0;
-heredoc>   d};
-heredoc> 
-heredoc> watch(receipts, generateCodes 5};
-heredoc> 
-heredoc> watch(re: 
-heredoc> one
-heredoc>  }
-heredoc>   rwat
-heredoc>  
-heredoc> gap
-heredoc> watch(re: 
-heredoc> one
-heredoc>  }
-heredoc>   rwatch(iint;
-heredoc>   height: 8p }
-heredoc>   ba}
-heredoc> 
-heredoc> .btn-mode.pr80;
-heredoc>  
-heredoc> al
-heredoc> gn:watch(includeUb82f6
-heredoc> al
-heredoc> gn:watch(  coloal
-heredoc> gn:watch(includeUn, g.7};
-heredoc> 
-heredoc> watch(receipts, gene
-heredoc>  
-heredoc> mar
-heredoc> watch(reground
-heredoc>  }
-heredoc>   rwate5
-heredoc> 7eb
-heredoc> pac }
-heredoc>   rwate5
-heredoc> 7 4 px7eb
-heredoc> watwnwa-w }
-heredoc>   rwatch(iex sh  backgro nd  if (ind:  }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i.v   wn sh  }
-heredoc> };
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i.v   wn    cur;
-heredoc> };ba
-heredoc> kdr};
-heredoc> 
-heredoc> constt b
-heredoc> uront-weight};
-heredoc> 
-heredoc> consttis
-heredoc> lay};
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,      
-heredoc> ust};
-heredoc> 
-heredoc> consttt:
-heredoc> center;
-heredoc>   gap: 0.5rem;
-heredoc> }
-heredoc> 
-heredoc> .code-area {kdrfl
-heredoc> con1;
-heredoc> ur(};
-heredoc> 
-heredoc> ay
-heredoc> conex;};
-heredoc> 
-heredoc> const re
-heredoc> tio};
-heredoc> 
-heredoc> ll}
-heredoc> .};de
-heredoc> des};
-heredoc> 
-heredoc> cos: 
-heredoc> ent.};
-heredoc> des}st
-heredoc> cosconfy-t:
-heredoc> contere-b};
-heredoc> 
-heredoc> di
-heredoc> ll}1re.}0 120px;
-heredoc> converx s.: con 25 {
-heredoc> };
-heredoc> dt};
-heredoc> 
-heredoc>  0.;
-heredoc> 
-heredoc> 
-heredoc> 
-heredoc> .
-heredoc>   lnercon bo 0{
-heredoc>     ,       const qrEl = 10  border: none;
-heredoc>   color:} si      cu} si      co
-heredoc>    color:} si  n:
-heredoc> watch(receiptser
-heredoc> watch(receiptor: white;
-heredoc>   font-weight: 600;
-heredoc>   mar 10watch(receiptor00%;
-heredoc> }
-heredoc> 
-heredoc> .code-card-contain  margin: 0;
-heredoc>   d};:   d};
-heredoc> 
-heredoc> watcid
-heredoc> watmin
-heredoc> watch(re: 
-heredoc> one
-heredoc>  }
-heredoc>   rwat
-heredoc>  
-heredoc> gap
-heredoc> in(one
-heredoc>  }
-heredoc>   w, }00 x) 
-heredoc> gapargiwaboone
-heredoc>  }
-heredoc>   m; } c rs  height: 8p     ba}
-heredoc> 
-heredoc> . 10;
-heredoc> }
-heredoc> 
-heredoc> .btde- 
-heredoc> al
-heredoc> gn:watch( positial
-heredoc> gn:watch(  coloal
-heredoc> : g00gn:watch(include%;
-heredoc> watch(receipts, gene
-heredoc>  
-heredoc>  0. 
-heredoc> mar
-heredoc> watch(regrounle: waes }
-heredoc>   rwate5
-heredoc> 7co e-7eb
-heredoc> pacnepafl  rwd 7 4 px7nswatwnwa-ta  rwatch(i);};
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i
-heredoc>  
-heredoc> pos};
-heredoc> 
-heredoc> consttol
-heredoc> te;};
-heredoc> 
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    
-heredoc>  
-heredoc> bac};
-heredoc> 
-heredoc> consttbi
-heredoc> ity};ba
-heredoc> kdr};
-heredoc> 
-heredoc> constt b
-heredoc> uront-weightbokdrr-
-heredoc> conus:uront-w  
-heredoc> consttis
-heredoc> lay;
-heredoc>  lay};
-heredoc> 
-heredoc> it
-heredoc> con ce};
-heredoc> 
-heredoc> consttst
-heredoc> fy-ust};
-heredoc> 
-heredoc> constte
-heredoc> con pacenter;1r  gap:
-heredoc> .}
-heredoc> 
-heredoc> .code-areak {
-heredoc>  con1;
-heredoc> ur(};
-heredoc> 
-heredoc> ay
-heredoc> teur180d
-heredoc> ay
-heredoc> 
-heredoc> }
-heredoc> c.c
-heredoc> const d-ftio};
-heredoc> 
-heredoc> nv
-heredoc> ll}.co.}-cdes}ba
-heredoc> cosanvas {
-heredoc>   max-width: 100%;
-heredoc>   max-he
-heredoc> di
-heredoc> ll100%;
-heredoc>  lobconverx s.: conin};
-heredoc> dt};
-heredoc> 
-heredoc>  0.;
-heredoc> 
-heredoc> 
-heredoc> 
-heredoc> .
-heredoc> 
-heredoc>  dfo
-heredoc>  0siz
-heredoc> 
-heredoc> 
-heredoc> 1.25rem    ,       cot:  color:} si      cu} si      co
-heredoc>    color
-heredoc> }   color:} si  n:
-heredoc> watch(receiptspwatch(receiptserkgwatch(receiptor0,  font-weight: 600;
-heredoc>   px  mar 10watch(rece 1}
-heredoc> 
-heredoc> .code-card-contain  martop:   d};:   d};
-heredoc> 
-heredoc> watcid
-heredoc> watmin
-heredoc> win
-heredoc> watcid
-heredoc> wat;
-heredoc>  watmierwatchusone
-heredoc>  }
-heredoc>    b }der:  
-heredoc> gap
-heredoc>   binkg }und:  ransparent;
-heredoc>   color: rgba(255, 25
-heredoc> . 10;
-heredoc> }
-heredoc> 
-heredoc> .btde- 
-heredoc> al
-heredoc> gn:watch(5rem;
-heredoc>   cursal
-heredoc> gn:ingergn:watch(  coloalac: g00gn:watch(inunwatch(receipts, gene
-heredoc>  3a 
-heredoc>  0. 
-heredoc> mar
-heredoc> watch(re {
-heredoc>  marnt-siz  rwate5
-heredoc> 7co e-7eb
-heredoc> pacgb7co e-725pacnepaf0.
-heredoc> const  {  }
-heredoc> };
-heredoc> 
-heredoc> constt,    curei  i
-heredoc>  
-heredoc> pos};
-heredoc> 
-heredoc> cpos};
-heredoc> 
-heredoc> constted
-heredoc> 
-heredoc>    
-heredoc> pos};
-heredoc> 
-heredoc> consttol
-heredoc>  0;
-heredoc> 
-heredoc> conght: 0;
-heredoc>   ba
-heredoc> conoun};
-heredoc> 
-heredoc> const, 0
-heredoc>  0, 
-heredoc> bac};
-heredoc> 
-heredoc> cback
-heredoc> con-fiity};balukdr};
-heredoc> );
-heredoc> conadduront-wemconus:uront-w  
-heredoc> coenconsttis
-heredoc> lay;
-heredoc> selay;
-heredoc>  lm) la  
-heredoc> it
-heredoc> cex:c10
-heredoc> constt.fofy-ust}ns
-heredoc> consttsplcon paex.}
-heredoc> 
-heredoc> .code-areak {
-heredoc>  c
-heredoc> .
-heredoc> tn- con1;
-heredoc> ur(};: ur(};pa
-heredoc> ay
-heredoc> g: t.8ay
-heredoc> 
-heredoc> }
-heredoc> c b
-heredoc> ckgrocod:
-heredoc> nv
-heredoc> ll}.5, 255, l55cosanvas {
-heredoc>   mar:  max-widd   max-he
-heredoc> di
-heredoc> ll1005,di
-heredoc> ll10  lol lobcoitdt};
-heredoc> 
-heredoc>  0.;
-heredoc> 
-heredoc> 
-heredoc> 
-heredoc> .
-heredoc> 
-heredoc>  dfo
-heredoc> px
-heredoc>  0 fo
-heredoc> 
-heredoc> 
-heredoc> size: 1r 0s
-heredoc> }
-heredoc> 
-heredoc> 1.tn-a   color
-heredoc> }   color:} si  n:
-heredoc> watch(receiptspwatch(receine}   coliewatch(receiptspwa44  px  mar 10wat
-ch(rece 1}
-heredoc> 
-heredoc> .code-card-contain  martop:   d};:   d};
-heredoc>   
-heredoc> .code-card-contain  mar-na
-heredoc> watcid
-heredoc> watmin
-heredoc> win
-heredoc> watcid
-heredoc> wat;
-heredoc>  watmieropawatmi 0win
-heredoc> w
-heredoc> 
-heredoc> wahowat;
-heredoc> s  wa f }
-heredoc>    b }der:  
-heredoc> g;
-heredoc>   cgap
-heredoc>   binkg25   2  color: rgba(255, 25
-heredoc> . 1op. 10;
-heredoc> }
-heredoc> 
-heredoc> .btde- 
-heredoc> al
-heredoc> gn: center;al
-heredoc> gn:tyge>  cursal
-heredoc> gn:ifrgn:ing/sr 3a 
-heredoc>  0. 
-heredoc> mar
-heredoc> watch(re {
-heredoc>  marnt-siz  rwate5
-heredoc> 7co e-7eb
-heredoc> pacgb7co e o 0.wrmar twafi marnt-sied7co e-7eb
-heredoc> pacgb7c& pacgb7co oconst  {  }
-heredoc> }
+cmdand heredoc>   pa  border-radius: 24lc  display: flex;
+cmdand heredoc>   al-i  alig  align-i  }
+cmdand heredoc> 
+cmdand heredoc> .code-a
+cmdand heredoc> .}
+cmdand heredoc> 
+cmdand heredoc> .code-areak {
+cmdand heredoc>    flex: 1;
+cmdand heredoc>  r  displ180d  f0.75r.}
+cmdand heredoc> 
+cmdand heredoc> .c
+cmdand heredoc> .
+cmdand heredoc> tn-   flex: 1;
+cmdand heredoc> :  r  displ1ng}
+cmdand heredoc> 
+cmdand heredoc> .code-car  alkgrou rd  justify-content: cewi  pa  10  overflow: 
+hidden;
+cmdand heredoc>   win  width: 100%;
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> {
+cmdand heredoc> }
+cmdand heredoc> or  win  width: 100%;
+cmdand heredoc> di}
+cmdand heredoc> 
+cmdand heredoc> {
+cmdand heredoc> }
+cmdand heredoc> 
+cmdand heredoc> .scanner-size: 1rem;
+cmdand heredoc> .slide-argin-top  display: flex;
+cmdand heredoc>   flex-c rem;
+cmdand heredoc>   b  flex-c  flex-directiosp  al rig  r  justify-content: cepa  
+width: 100%; color:   heightdius: 16px;
+cmdand heredoc>   gap: }
+cmdand heredoc> 
+cmdand heredoc> .code-carze  gap: }
+cmdand heredoc> 
+cmdand heredoc> .code-cav:
+cmdand heredoc> .code-d,   width: min(60vh, 80    height: min(.3  cursor: c  cur
+sor: pointer;
+cmdand heredoc>   25  z-index: 10;
+cmdand heredoc> }
+cmdand heredoc> iz}
+cmdand heredoc> 
+cmdand heredoc> .code-card curs  posima  25  z-index: 10;
+cmdand heredoc> }
+cmdand heredoc> iz}
+cmdand heredoc> 
+cmdand heredoc> .cgn}
+cmdand heredoc> iz}
+cmdand heredoc> 
+cmdand heredoc> .code-cardle>
+cmdand heredoc> 
+cmdand heredoc> .F
+cmdand heredoc> g  heiba  hround: white  transition: 3a  transfo g
+cmdand heredoc> .code-card-inner.flipped {
+cmdand heredoc> 5, 25  transform: rotateY(180dp:}
+cmdand heredoc> 
+cmdand heredoc> .codeemp5, 25  transform: rotateYig
+cmdand heredoc> .code-car
