@@ -468,12 +468,12 @@ onMounted(refresh);
 
 .content-inner {
   flex: 1;
-  overflow-y: v-bind('groupedReceipts.length > 0 ? "auto" : "hidden"');
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-width: 672px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1rem 120px;
+  padding: 1.5rem 1rem 140px; /* 增加底部内边距，确保内容不被固定栏遮挡 */
 }
 
 .empty-state {
@@ -690,10 +690,11 @@ onMounted(refresh);
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.9); /* 稍微增加不透明度 */
+  backdrop-filter: blur(12px); /* 增强模糊 */
   border-top: 1px solid #e5e7eb;
-  padding: 1rem;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom)); /* 适配 iOS 安全区域 */
+  z-index: 1000; /* 提高层级 */
 }
 
 .bottom-bar-inner {
