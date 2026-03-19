@@ -1,3 +1,4 @@
+Note: The tool simplified the command to ` cat << 'EOF' > /Users/ashin/development/taxfree/frontend/src/views/ReceiptScanner.vue
 <template>
   <div class="receipt-scanner-page">
     <!-- 模式选择 -->
@@ -185,27 +186,16 @@ const currentIndex = ref(0);
 const includeUnassigned = ref(null);
 const codeType = ref('barcode');
 
-// 管理所有 Slide 的 Canvas 引用
 const qrRefs = ref([]);
 const barcodeRefs = ref([]);
 const swiperInstance = ref(null);
 
-const setQrRef = (el, index) => {
-  if (el) qrRefs.value[index] = el;
-};
-const setBarcodeRef = (el, index) => {
-  if (el) barcodeRefs.value[index] = el;
-};
+const setQrRef = (el, index) => { if (el) qrRefs.value[index] = el; };
+const setBarcodeRef = (el, index) => { if (el) barcodeRefs.value[index] = el; };
 
-const onSwiperInit = (swiper) => {
-  swiperInstance.value = swiper;
-};
+const onSwiperInit = (swiper) => { swiperInstance.value = swiper; };
+const onSlideChange = (swiper) => { currentIndex.value = swiper.activeIndex; };
 
-const onSlideChange = (swiper) => {
-  currentIndex.value = swiper.activeIndex;
-};
-
-// 监听 currentIndex 变化同步 Swiper (如果是通过按钮切换时)
 watch(currentIndex, (newIndex) => {
   if (swiperInstance.value && swiperInstance.value.activeIndex !== newIndex) {
     swiperInstance.value.slideTo(newIndex);
@@ -220,13 +210,8 @@ const ownerName = computed(() => {
 
 const currentReceipt = computed(() => receipts.value[currentIndex.value]);
 
-const handleConfirmMode = (include) => {
-  includeUnassigned.value = include;
-};
-
-const toggleCodeType = () => {
-  codeType.value = codeType.value === 'qr' ? 'barcode' : 'qr';
-};
+const handleConfirmMode = (include) => { includeUnassigned.value = include; };
+const toggleCodeType = () => { codeType.value = codeType.value === 'qr' ? 'barcode' : 'qr'; };
 
 const markAbnormal = () => {
   if (!currentReceipt.value) return;
@@ -243,50 +228,25 @@ const markAbnormal = () => {
 const generateCodes = async () => {
   if (receipts.value.length === 0) return;
   await nextTick();
-  
   receipts.value.forEach(async (receipt, index) => {
     try {
       const qrEl = qrRefs.value[index];
       const barcodeEl = barcodeRefs.value[index];
-
-      if (qrEl) {
-        await QRCode.toCanvas(qrEl, receipt.ticketNumber, {
-          width: 400,
-          margin: 2
-        });
-      }
-      if (barcodeEl) {
-        JsBarcode(barcodeEl, receipt.ticketNumber, {
-          format: 'CODE128',
-          width: 3,
-          height: 150,
-          displayValue: true,
-          fontSize: 20,
-          margin: 10
-        });
-      }
-    } catch (err) {
-      console.error(`Code generation error for slide ${index}:`, err);
-    }
+      if (qrEl) await QRCode.toCanvas(qrEl, receipt.ticketNumber, { width: 400, margin: 2 });
+      if (barcodeEl) JsBarcode(barcodeEl, receipt.ticketNumber, { format: 'CODE128', width: 3, height: 150, displayValue: true, fontSize: 20, margin: 10 });
+    } catch (err) { console.error(err); }
   });
 };
 
-// 监听 receipts 变化重新生成码
 watch(receipts, generateCodes, { deep: true });
-// 监听模式确认
-watch(includeUnassigned, (val) => {
-  if (val !== null) generateCodes();
-});
+watch(includeUnassigned, (val) => { if (val !== null) generateCodes(); });
 
 const handleKeyDown = (e) => {
   if (includeUnassigned.value === null || receipts.value.length === 0) return;
   if (e.key === 'ArrowLeft' && currentIndex.value > 0) currentIndex.value--;
-  else if (e.key === 'ArrowRight' && currentIndex.value < receipts.value.length - 1)
-    currentIndex.value++;
-  else if (e.key === ' ' || e.key === 'Spacebar') {
-    e.preventDefault();
-    toggleCodeType();
-  } else if (e.key === 'e' || e.key === 'E') markAbnormal();
+  else if (e.key === 'ArrowRight' && currentIndex.value < receipts.value.length - 1) currentIndex.value++;
+  else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); toggleCodeType(); }
+  else if (e.key === 'e' || e.key === 'E') markAbnormal();
 };
 
 const loadReceipts = () => {
@@ -326,6 +286,7 @@ onUnmounted(() => {
   flex-direction: column;
   background: linear-gradient(to bottom right, #1e3a8a, #581c87, #831843);
   overflow: hidden;
+  position: relative;
 }
 
 .mode-dialog {
@@ -402,7 +363,6 @@ onUnmounted(() => {
 .btn-mode.primary {
   background: linear-gradient(to right, #3b82f6, #a855f7);
   color: white;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
 }
 
 .btn-mode.outline {
@@ -416,22 +376,8 @@ onUnmounted(() => {
   color: #6b7280;
 }
 
-.mode-card.empty .empty-icon {
-  width: 60px;
-  height: 60px;
-  background: #f3f4f6;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: #9ca3af;
-  margin: 0 auto 1rem;
-}
-
 .scanner-main {
-  height: 100vh;
-  height: -webkit-fill-available;
+  flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -457,11 +403,6 @@ onUnmounted(() => {
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 8px;
-}
-
-.btn-back:hover {
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .header-center {
@@ -483,11 +424,6 @@ onUnmounted(() => {
   height: 8px;
   background: #4ade80;
   border-radius: 50%;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  50% { opacity: 0.5; }
 }
 
 .count-badge {
@@ -502,8 +438,6 @@ onUnmounted(() => {
 
 .owner-warning {
   flex-shrink: 0;
-  position: relative;
-  z-index: 50;
   background: linear-gradient(to right, #facc15, #fb923c);
   padding: 0.5rem 1rem;
   text-align: center;
@@ -522,7 +456,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 1rem 0 120px;
   overflow: hidden;
   width: 100%;
 }
@@ -543,38 +477,18 @@ onUnmounted(() => {
 
 .code-card-container {
   perspective: 1000px;
-  width: min(65vh, 80vw, 300px);
-  height: min(65vh, 80vw, 300px);
-  margin-bottom: 0.5rem;
+  width: min(60vh, 80vw, 300px);
+  height: min(60vh, 80vw, 300px);
+  margin-bottom: 1rem;
   cursor: pointer;
   z-index: 10;
 }
-
-.code-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  background: transparent;
-}
-
-/* 移除旧的滑动动画 */
-.slide-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
 
 .code-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  text-align: center;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
@@ -589,12 +503,10 @@ onUnmounted(() => {
   backface-visibility: hidden;
   background: white;
   border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  padding: 1rem;
 }
 
 .code-card-back {
@@ -608,92 +520,595 @@ onUnmounted(() => {
 }
 
 .code-ticket {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  font-family: ui-monospace, monospace;
   color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  margin: 0 0 1.5rem;
-  text-align: center;
+  margin-top: 1rem;
 }
 
-/* 切换器样式优化 */
 .code-switch-container {
   display: flex;
   background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
   padding: 6px;
   border-radius: 16px;
   gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
 }
 
 .switch-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   padding: 8px 16px;
   border-radius: 10px;
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.95rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.switch-btn svg {
-  opacity: 0.7;
 }
 
 .switch-btn.active {
   background: white;
   color: #1e3a8a;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.switch-btn.active svg {
-  opacity: 1;
 }
 
 .mobile-hint {
-  display: none;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
-  margin-top: 1rem;
-}
-
-@media (max-width: 768px) {
-  .mobile-hint {
-    display: block;
-  }
-  .shortcuts {
-    display: none;
-  }
+  margin-top: 10px;
 }
 
 .scanner-footer {
-  position: fixed; /* 强制吸附在屏幕底部 */
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7); /* 加深透明度，防止内容重叠时看不清 */
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(15px);
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  width: 100%;
-  z-index: 1000; /* 确保在最顶层 */
+  z-index: 1000;
 }
 
-.code-area {
-  flex: 1;
+.footer-btns {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: calc(100px + env(safe-area-inset-bottom)); /* 给底部的固定页脚留出空间 */
-  overflow: hidden;
-  width: 100%;
+  gap: 0.75rem;
 }
+
+.btn-nav {
+  flex: 1;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 12px;
+  font-size: 1rem;
+}
+
+.btn-abnormal {
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(to right, #ef4444, #f97316);
+  border: none;
+  color: white;
+  border-radius: 12px;
+  font-size: 1rem;
+}
+
+.btn-nav:disabled, .btn-abnormal.disabled {
+  opacity: 0.3;
+}
+
+.shortcuts {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.5rem;
+  text-align: center;
+}
+</style>
+EOF`, and this is the output of running that command instead:
+ashin@ashindeMacBook-Pro taxfree %  cat << 'EOF' > /Users/ashin/development/taxf
+ree/frontend/src/views/ReceiptScanner.vue
+heredoc> <template>
+heredoc>   <div class="receipt-scanner-page">
+heredoc>     <!-- 模式选择 -->
+heredoc>     <div v-if="includeUnassigned === null" class="mode-dialog">
+heredoc>       <div class="mode-card">
+heredoc>         <div class="mode-icon">
+heredoc>           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32
+" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+heredoc>             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+heredoc>           </svg>
+heredoc>         </div>
+heredoc>         <h2 class="mode-title">选择扫描模式</h2>
+heredoc>         <p class="mode-desc">
+heredoc>           <template v-if="ownerId">
+heredoc>             正在为 <span class="highlight">{{ ownerName }}</span> 准备 
+扫描队列
+heredoc>           </template>
+heredoc>           <template v-else>
+heredoc>             正在为未指定持有人准备扫描队列
+heredoc>           </template>
+heredoc>         </p>
+heredoc>         <p v-if="ownerId" class="mode-hint">是否包含"未指定持有人"的小 
+票？</p>
+heredoc>         <div class="mode-btns">
+heredoc>           <t<template>
+heredoc>   <div class="receipt-scanner-page">
+heredoc>     <!-- 模式选择 -->
+heredoc>     <div v-nf  <div clru    <!-- 模式选择 -->
+heredoc>     <div <ffffffff><ffffffff>    <div v-if="includeUn        <div class
+="mode-card">
+heredoc>         <div class="mode-icon"ick=        <div class="mode-ico         
+   <svg xmlns="http://wNa            <polygon points="13 2 3 14 12 14 11 22 21 1
+0 12 10 13 2"/>
+heredoc>           </svg>
+heredoc>         </div>
+heredoc>         <h2 class="mode-title">选择扫nd          </svg>
+heredoc>         </div>
+heredoc>         <h2 class="mode-title">选择n>        </div>
+heredoc> mp        <h2 c          <p class="mode-desc">
+heredoc>           <template v-i'/          <template v-if="ow</            正在
+为 <span class=<!          </template>
+heredoc>           <template v-else>
+heredoc>             正在为未指定持有 <          <template  e            正在为 
+未<ffffffff>e          </template>
+heredoc>         </p>
+heredoc>         <p v-if="owne/h        </p>
+heredoc>        <ffffffff>       <p <ffffffff><ffffffff>        <div class="mode
+-btns">
+heredoc>           <t<template>
+heredoc>   <div class="receipt-scanner-page"><ffffffff>         <t<template> </d
+iv>
+heredoc>     <div class="receipt<ffffffff><ffffffff>   <!-- 模式选择 -->
+heredoc>     <div       <div v-nf  <div clruma    <div <ffffffff><ffffffff>    <
+d class="scanner-header">
+heredoc>                 <div class="mode-icon"ick=        <div class="mode-    
+              </svg>
+heredoc>         </div>
+heredoc>         <h2 class="mode-title">选择扫nd          </svg>
+heredoc>         </div>
+heredoc>         <h2 class="mode-title">选择n>        </div>
+heredoc> mp   ="        </div>
+heredoc> 12        <h2 c          </div>
+heredoc>         <h2 class="mode-title">选择n>   >
+heredoc>           </butmp        <h2 c          <p class="mode-desc">
+heredoc>                  <template v-i'/          <template cl          <templa
+te v-else>
+heredoc>             正在为未指定持有 <          <template  e            正在为<
+ffffffff>d            正在为<ffffffff>leng        </p>
+heredoc>         <p v-if="owne/h        </p>
+heredoc>        <ffffffff>       <p <ffffffff><ffffffff>        <div class="mode
+-btns">
+heredoc>      rr        <p &&       <ffffffff>       <p <ffffffff><ffffffff>    
+    <diver          <t<template>
+heredoc>   <div class="receipt-scanner00  <div class="receipigh    <div class="r
+eceipt<ffffffff><ffffffff>   <!-- 模式选择 -->
+heredoc>     <div       e-    <div       <div v-nf  <div clruma    <div <fffffff
+f><ffffffff> 18     0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.4
+2 0z"/>
+heredoc>               </div>
+heredoc>         <h2 class="mode-title">选择扫nd          </svg>
+heredoc>         </div>
+heredoc>  y2        <h2 c          </div>
+heredoc>         <h2 class="mode-title">选择n>   <ffffffff><ffffffff>        <h2
+ c/dmp   ="        </div>
+heredoc> 12        <h2 c          </diver12        <h2 c     ec        <h2 class
+="mode-title":s          </butmp        <h2 c          <pee                 <tem
+plate v-i'/          <template cl       c            正在为未指定持有 <         
+ <template  e            正在<ffffffff>r        <p v-if="owne/h        </p>
+heredoc>        <ffffffff>       <p <ffffffff><ffffffff>        <div class="mode
+-btns">
+heredoc>      rr        <p &&       <ffffffff>    <d       <ffffffff>       <p <
+ffffffff><ffffffff>        <div       rr        <p &&       <ffffffff>       <p 
+<ffffffff><ffffffff>        <dk=  <div class="receipt-scanner00  <div class="rec
+eipigh    <div class="receiptd:    <div       e-    <div       <div v-nf  <div c
+lruma    <div <ffffffff><ffffffff> 18     0 0 0 1.71 3h16.94a2 2 0 0 0 1d-      
+        </div>
+heredoc>         <h2 class="mode-title">选择扫nd          </svg>
+heredoc>         </div>
+heredoc>  y2        <h2 c          </dive === 'barcode'        <h2 class="ay    
+    </div>
+heredoc>  y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mode-title">="12        <h
+2 c          </diver12        <h2 c     ec        <h2 class="mode-t><       <fff
+fffff>       <p <ffffffff><ffffffff>        <div class="mode-btns">
+heredoc>      rr        <p &&       <ffffffff>    <d       <ffffffff>       <p <
+ffffffff><ffffffff>        <div       rr        <p &&       <ffffffff>       <p 
+<ffffffff><ffffffff>        <dk=  <div class="receipt-scanner00  <div class="rec
+eipigh    <div class="receiptd:    <div       e-    <div       <div v-nf  <div c
+       rr        <p &&       <ffffffff>    <d       <ffffffff>      s=        <h
+2 class="mode-title">选择扫nd          </svg>
+heredoc>         </div>
+heredoc>  y2        <h2 c          </dive === 'barcode'        <h2 class="ay    
+    </div>
+heredoc>  y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mode-title">="12        <h
+2 c          </diver12        <h2 c     ec        <h2 class="mode-t><          <
+/div>
+heredoc>  y2        <h2 c          </dive === 'barc14 y2        <h   y2        <
+h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="moto        <!- y2        
+<h->     ch     rr        <p &&       <ffffffff>    <d       <ffffffff>       <p
+ <ffffffff><ffffffff>        <div       rr        <p &&       <ffffffff>       <
+p <ffffffff><ffffffff>        <dk=  <div class="receipt-scanner00  <div class="r
+ecex="0 0 24 24" fill=        </div>
+heredoc>  y2        <h2 c          </dive === 'barcode'        <h2 class="ay    
+    </div>
+heredoc>  y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mode-title">="12        <h
+2 c          </diver12        <h2 c     ec        <h2 class="mode-t><          <
+/div>
+heredoc>  y2        <h2 c          </dive === 'barc14 y2        <h   y2        <
+h2 c        y2        <h   y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mo<ffffffff><ffffffff>    
+   <!- y2        <h->     
+heredoc>   y2        <h2 c          </dive === 'barc14 y2        <h   y2        
+<h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="moto        <!- y2nd      
+  <!- y2        <h->        <h2 class="moto        <!- y2        <h->     ch    
+ rr    y2        <h2 c          </dive === 'barcode'        <h2 class="ay       
+ </div>
+heredoc>  y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mode-title">="12        <h
+2 c          </diver12        <h2 c     ec        <h2 class="mode-t><          <
+/div>
+heredoc>  y2        <h2 c <ffffffff>y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mo          <!- y2        
+<h->     ex y2        <h2 c          </dive === 'barc14 y2        <h   y2       
+ <h2 c        y2        <h   y2        <h2 c          </div>
+heredoc>         <!- y2        <h-<p        <!- y2        <h->        <h2 class=
+"mo<ffffffff><ffffffff>       <!- y2        <h->     
+heredoc>   y2        <h2 c          </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2        <h   y2        
+<h2 c   on        <!- y2        <h->        <h2 class="moto        <!- y2nd     
+   <!- y2        <h-> } y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mode-title">="12        <h
+2 c          </diver12        <h2 c     ec        <h2 class="mode-t><          <
+/div>
+heredoc>  y2        <h2 c <ffffffff>y2        <h2 c          </te        <!- y2 
+       <h->     co y2        <h2 c <ffffffff>y2        <h2 c          </div>
+heredoc>         <!- y2        <h->        <h2 class="mo          <!- y2        
+<h->     ex y2        <h2 c     l)        <!- y2        <h->        <h2 class="m
+o    r        <!- y2        <h-<p        <!- y2        <h->        <h2 class="mo
+<ffffffff><ffffffff>       <!- y2        <h->     
+heredoc>   y2        <h2 c          </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2     de  y2        <h2 
+c          </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2        <wi  y2        
+<h2 c          </dive === 'barc14 yex        <!- y2        <h->        <h2 class
+="mode-title">="12        <h2 c          </diver12        <h2 c     ec        <h
+2 class="mode-t><          </div>
+heredoc>  y2        <h2 c <ffffffff>y2        <h2 c          </t>  y2        <h2
+ c <ffffffff>y2        <h2 c          </te        <!- y2        <h->     co y2  
+      <h2 c <ffffffff>y2        <h2 c          </div>
+heredoc>         <!- y2        c        <!- y2        <h->        <h2 class="mo 
+         <!- y2        <h->     ex y2        <h2 c     l)        <!- y2        <
+h-> e   y2        <h2 c          </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2     de  y2        <h2 
+c          </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2        <wi  y2        
+<h2 c          </dive === 'barc14 yex  <ffffffff><ffffffff> y2        <h2 c     
+     </dive === 'barc14 yal  y2        <h2 c          </dive === 'barc14 y2     
+   <wi  y2        <h2 c          </divef (currentIn y2        <h2 c <ffffffff>y2
+        <h2 c          </t>  y2        <h2 c <ffffffff>y2        <h2 c          
+</te        <!- y2        <h->     co y2        <h2 c <ffffffff>y2        <h2 c 
+         </div>
+heredoc>         <!- y2        c        <!- y2        <h->        <h2 class="mo 
+        va        <!- y2        c        <!- y2        <h->        <h2 class="mo
+          <!- y2        <h->     ex y2        <h2 c     l)        <!- y2        
+<h-> e   y2        <h2 c        co  y2        <h2 c          </dive === 'barc14 
+y2     de  y2        <h2 c          </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2        <wi  y2        
+<h2 c          </dive === 'baeC  y2        <h2 c          </dive === 'barc14 y2 
+       <wi  y2        <h2 c          </dive === 'barcst        <!- y2        c  
+      <!- y2        <h->        <h2 class="mo         va        <!- y2        c 
+       <!- y2        <h->        <h2 class="mo          <!- y2        <h->     e
+x y2        <h2 c     l)        <!- y2        <h-> e   y2        <h2 c        co
+  y2        <h2 c          </dive === 'barc14 y2     de  y2        <h2 c        
+  </dive === 'barc14 y>
+heredoc>   y2        <h2 c          </dive === 'barc14 y2        <wi  y2        
+<h2 c  st  y2        <h2 c          </dive === 'barc14 y2        <wi  y2        
+<h2 c          </dive === 'baeC  y2        <h2 c          </dive === 'barc14 y2 
+       <wi  y2        <h2 c          </dive === 'barcst        <!- y2        c  
+      <!- y2        <h->        <h2 class="mo         va        <!- y2        c 
+       <!- y2        <h->        <h2 class="mo          ((  y2        <h2 c     
+     </dive === 'barc14 y2        <wi  y2        <h2 c  st  y2        <h2 c     
+     </dive === 'barc14 y2        <wi  y2        <h2 c          </dive === 'baeC
+  y2        <h2 c          </dive === 'barc14 y2        <wi  y2        <h2 c    
+      </dive === 'barcst        <!- y2        c        <!- y2        <h->       
+ <h2 class="mo         va        <!- y2        c        <!- y2        <h->      
+  <h2 class="mo          ((  y2        <h2 c          </dive === 'barc14 y2     
+   <wi  y2        <h2 c  st  y2        <h2 c          </dive === 'barc1tom right
+, #1e3a8a, #581c87, #831843);
+heredoc>   overflow: hidden;
+heredoc>   position: relative;
+heredoc> }
+heredoc> 
+heredoc> .mode-dialog {
+heredoc>   flex: 1;
+heredoc>   display: flex;
+heredoc>   align-items: center;
+heredoc>   justify-content: center;
+heredoc>   padding: 1rem;
+heredoc> }
+heredoc> 
+heredoc> .mode-card {
+heredoc>   background: rgba(255, 255, 255, 0.95);
+heredoc>   backdrop-filter: blur(8px);
+heredoc>   border-radius: 24px;
+heredoc>   padding: 1.5rem;
+heredoc>   max-width: 28rem;
+heredoc>   width: 100%;
+heredoc>   text-align: center;
+heredoc>   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+heredoc> }
+heredoc> 
+heredoc> .mode-icon {
+heredoc>   width: 48px;
+heredoc>   height: 48px;
+heredoc>   background: linear-gradient(135deg, #3b82f6, #a855f7);
+heredoc>   border-radius: 12px;
+heredoc>   display: flex;
+heredoc>   align-items: center;
+heredoc>   justify-content: center;
+heredoc>   margin: 0 auto 1rem;
+heredoc>   color: white;
+heredoc> }
+heredoc> 
+heredoc> .mode-title {
+heredoc>   font-size: 1.25rem;
+heredoc>   font-weight: 700;
+heredoc>   background: linear-gradient(to right, #2563eb, #9333ea);
+heredoc>   -webkit-background-clip: text;
+heredoc>   -webkit-text-fill-color: transparent;
+heredoc>   margin: 0 0 0.5rem;
+heredoc> }
+heredoc> 
+heredoc> .mode-desc, .mode-hint {
+heredoc>   color: #374151;
+heredoc>   margin: 0 0 0.25rem;
+heredoc>   font-size: 0.875rem;
+heredoc> }
+heredoc> 
+heredoc> .mode-hint {
+heredoc>   color: #6b7280;
+heredoc>   margin-bottom: 1rem;
+heredoc> }
+heredoc> 
+heredoc> .  overflow: hidden;
+heredoc>   position: relol  position: relatiod}
+heredoc> 
+heredoc> .mode-dialog {
+heredoc>   flex;  flex: 1;
+heredoc>   ti  displayn;  align-items: 
+heredoc> }  justify-content: ceng  padding: 1rem;
+heredoc> }
+heredoc> 
+heredoc> .modera}
+heredoc> 
+heredoc> .mode-card {ont-s  backgrounre  backdrop-filter: blur(8px);
+heredoc>   border-    border-radius: 24px;
+heredoc>   pade.  padding: 1.5rem;
+heredoc>   d:  max-width: 28reto  width: 100%;
+heredoc>   ta8  text-align:r:  box-shadow: 0 25px.o}
+heredoc> 
+heredoc> .mode-icon {
+heredoc>   width: 48px;
+heredoc>   height 2px solid   width: 48co  height: 48p
+heredoc> }  background: os  border-radius: 12px;
+heredoc>   display: flex;
+heredoc>   align-items: an  display: flex;
+heredoc>   al
+heredoc>    align-items: 
+heredoc>    justify-content: cemn  margin: 0 auto 1rem;
+heredoc>   os  color: white;
+heredoc> }
+heredoc> 
+heredoc> .msc}
+heredoc> 
+heredoc> .mode-title
+heredoc>   fl  font-size:;
+heredoc>   font-weight: 700;ack  background: line 0  -webkit-background-clip: te
+xt;
+heredoc>   -webkit-text-fill-colo    -webkit-text-fill-color: tranen  margin: 0 
+0 0.5rem;
+heredoc> }
+heredoc> 
+heredoc> .mode-desc, .
+heredoc>  }
+heredoc> 
+heredoc> .mode-desc, .modesolid  color: #374151;
+heredoc>   mar1)  margin: 0 0 0.bo  font-size: 0.875reck }
+heredoc> 
+heredoc> .mode-hint {
+heredoc>   col  bac  color: #6an  margin-bottom:r:}
+heredoc> 
+heredoc> .  overflow: hidde;
+heredoc>   c  position: relol  .h
+heredoc> .mode-dialog {
+heredoc>   flex;  flex: 1;
+heredoc>   t}
+heredoc> 
+heredoc>   flex;  flex{
+heredoc>   ti  displayn;   }  justify-content: ceng  pad;
+heredoc> }
+heredoc> 
+heredoc> .modera}
+heredoc> 
+heredoc> .mode-card {ont-s  backgro
+heredoc>   ju
+heredoc> .mode-ont  border-    border-radius: 24px;
+heredoc>   pade.  padding: 1.5remht  pade.  padding: 1.5rem;
+heredoc>   d:  bo  d:  max-width: 28reto un  ta8  text-align:r:  box-shadow: 0 5
+,
+heredoc> .mode-icon {
+heredoc>   width: 48px;
+heredoc>   height 2px 5re  width: 48
+heredoc> .  height 2px  {}  background: os  border-radius: 12px;
+heredoc>   dihr  display: flex;
+heredoc>   align-items: an  dito  align-items: ,   al
+heredoc>    align-items: 
+heredoc>    justify;
+heredoc>    ex   justify-conr;
+heredoc>   os  color: white;
+heredoc> }
+heredoc> 
+heredoc> .msc}
+heredoc> 
+heredoc> .mode-title
+heredoc>   ft-}
+heredoc> 
+heredoc> .msc}
+heredoc> 
+heredoc> .mode-tiplay:
+heredoc> .mox;
+heredoc>   fl  fontem  font-weight: 7ti  -webkit-text-fill-colo    -webkit-text-
+fill-color: tranen  margin: 0 0 fl}
+heredoc> 
+heredoc> .mode-desc, .
+heredoc>  }
+heredoc> 
+heredoc> .mode-desc, .modesolid  color: #374151;
+heredoc>   mar1)  margin: 0
+heredoc>   pa }
+heredoc> 
+heredoc> .mode-de0 
+heredoc> 20p  mar1)  margin: 0 0 0.bo  font-size: }
+heredoc> 
+heredoc> .mode-hint {
+heredoc>   col  bac  color: #6an  margin-bo;
+heredoc> }  col  bac nt
+heredoc> .  overflow: hidde;
+heredoc>   c  position: relolect  c  position: relgn.mode-dialog {
+heredoc>   flex; fy  flex;   cente  t}
+heredoc> 
+heredoc>   flex;  f;
+heredoc> 
+heredoc>   eig  ti  display.c}
+heredoc> 
+heredoc> .modera}
+heredoc> 
+heredoc> .mode-card {ont-s  backgro
+heredoc>   ju
+heredoc> .width:
+heredoc> .mode-vh,  ju
+heredoc> .mode-ont  border-  mi.mo0v  pade.  padding: 1.5remht  pade.  paddin c 
+ d:  bo  d:  max-width: 28reto un  ta8  text-alig {.mode-icon {
+heredoc>   width: 48px;
+heredoc>   height 2px 5re  width: 48
+heredoc> .  height 2px  ns  width: 48    height 2px le.  height 2px  {}  backgro
+rd  dihr  display: flex;
+heredoc>   align-items: an  dito  align-e-  align-items: an  did-   align-items:
+ 
+heredoc>    justify;
+heredoc>    ex   justif
+heredoc>     justify;
+heredoc>         ex  e-vis  os  color: white;
+heredoc> ac}
+heredoc> 
+heredoc> .msc}
+heredoc> 
+heredoc> .mode-tiborde
+heredoc> .modiu  ft-}
+heredoc> 
+heredoc> .m d
+heredoc> .mscy: 
+heredoc> .mo;
+heredoc>  .mox;
+heredoc>   fl  :   fler
+heredoc> .mode-desc, .
+heredoc>  }
+heredoc> 
+heredoc> .mode-desc, .modesolid  color: #374151;
+heredoc>   mar1)  margin: 0
+heredoc>   pa }
+heredoc> 
+heredoc> .mode-de0 
+heredoc> 20p  mar-ca }
+heredoc> 
+heredoc> .mode-deva
+heredoc> , .  mar1)  margk canvas {
+heredoc>   max-width: 100  pa }
+heredoc> 
+heredoc> .mode-de010
+heredoc> .mod ob20p  mar1 c
+heredoc> .mode-hint {
+heredoc>   col  bac  color: #6an  ma25rem;
+heredoc>   font-we}  col  bac nt
+heredoc> .  overflow: hidde;n-.  overfl;
+heredoc> }
+heredoc> 
+heredoc> .  c  position: relne  flex; fy  flex;   cente  t}
+heredoc> 
+heredoc>   flex;  f;
+heredoc> 
+heredoc>   eig  ti  d p
+heredoc>   flex;  f;
+heredoc> 
+heredoc>   eig  ti  dis: 1
+heredoc>   eig  ti: 8
+heredoc> .modera}
+heredoc> 
+heredoc> .mode-carpx;
+heredoc> .mode-itc  ju
+heredoc> .width:
+heredoc> .mode-vh,  jpx.wi b.mode-ra.mode-ont  b    width: 48px;
+heredoc>   height 2px 5re  width: 48
+heredoc> .  height 2px  ns  width: 48    height 2px le.  height 2px  {}  backgro
+rd  dihr  display: ct  height 2px ro.  height 2px  ns  width: 8a  align-items: a
+n  dito  align-e-  align-items: an  did-   align-items: 
+heredoc>    justify;
+heredoc>    ex   jx;   justify;
+heredoc>    ex   justif
+heredoc>     justify;
+heredoc>         ex  e-vis  os  color: wt:   ex   jugr    justify;
+heredoc>  0        ex 
+heredoc>  ac}
+heredoc> 
+heredoc> .msc}
+heredoc> 
+heredoc> .mode-tiborde
+heredoc> .modiu  fdi
+heredoc> .: 1
+heredoc> .mo1re.modlc(1rem + 
+heredoc> .m d
+heredoc> .mscyea-.mset.mo;
+heredoc>  m) .m    fl ex.mode-desc, .oo }
+heredoc> 
+heredoc> .mode-de d
+heredoc> spl  mar1)  margin: 0
+heredoc>   pa }
+heredoc> 
+heredoc> 
+heredoc> 
+heredoc> .btn-nav {
+heredoc>   pa }
+heredoc> 
+heredoc> .mode-de0in
+heredoc> .mod85r20p  mar-kg
+heredoc> .mode-deva
+heredoc> 255, .  mar15,  max-width: 100  pa }
+heredoc> 
+heredoc> .d 
+heredoc> .mode-5, 255, 255, 0.2).mod ob20p w.mode-hint {
+heredoc>   codi  col  bac  f  font-we}  col  bac nt
+heredoc> .  overf {.  overflow: hidde;n-.25}
+heredoc> 
+heredoc> .  c  position: relne  flexient(
+heredoc>   flex;  f;
+heredoc> 
+heredoc>   eig  ti  d p
+heredoc>   flex;  f;
+heredoc> 
+heredoc>   eig  lor
+heredoc>   eig  ti bo  flex;  f;
+heredoc> 
+heredoc> 12
+heredoc>   eig  ti-si  eig  ti: 8
+heredoc> .mon-.modera}
+heredoc> 
+heredoc> .d,
+heredoc> .mode-bno.mode-itc  ed.width:
+heredoc> .mod: .mode-
+heredoc> 
+heredoc>   height 2px 5re  width: 48
+heredoc> .  height 2px  ns  width: 25.  height 2px  ns  width: :    justify;
+heredoc>    ex   jx;   justify;
+heredoc>    ex   ju
