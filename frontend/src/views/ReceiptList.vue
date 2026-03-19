@@ -473,7 +473,7 @@ onMounted(refresh);
   max-width: 672px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1rem 140px; /* 增加底部内边距，确保内容不被固定栏遮挡 */
+  padding: 1.5rem 1rem 180px; /* 进一步增加底部内边距，确保内容不被双排按钮或不同机型固定栏遮挡 */
 }
 
 .empty-state {
