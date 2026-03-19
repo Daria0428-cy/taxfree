@@ -320,12 +320,16 @@ onUnmounted(() => {
 
 <style scoped>
 .receipt-scanner-page {
-  min-height: 100vh;
+  height: 100vh;
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(to bottom right, #1e3a8a, #581c87, #831843);
+  overflow: hidden;
 }
 
 .mode-dialog {
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -336,7 +340,7 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   border-radius: 24px;
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 28rem;
   width: 100%;
   text-align: center;
@@ -344,35 +348,35 @@ onUnmounted(() => {
 }
 
 .mode-icon {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(135deg, #3b82f6, #a855f7);
-  border-radius: 16px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
   color: white;
 }
 
 .mode-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   background: linear-gradient(to right, #2563eb, #9333ea);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.5rem;
 }
 
 .mode-desc, .mode-hint {
   color: #374151;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.25rem;
+  font-size: 0.875rem;
 }
 
 .mode-hint {
-  font-size: 0.875rem;
   color: #6b7280;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .highlight {
@@ -383,13 +387,13 @@ onUnmounted(() => {
 .mode-btns {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .btn-mode {
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1rem;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -413,28 +417,31 @@ onUnmounted(() => {
 }
 
 .mode-card.empty .empty-icon {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background: #f3f4f6;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #9ca3af;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
 }
 
 .scanner-main {
-  min-height: 100vh;
+  height: 100vh;
+  height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  position: relative; /* 为绝对定位的 warning 提供参照 */
+  overflow: hidden;
+  position: relative;
 }
 
 .scanner-header {
-  height: 64px; /* 固定高度，不再由 padding 撑开 */
-  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  height: 64px;
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   padding: 0 1rem;
   display: flex;
@@ -494,22 +501,19 @@ onUnmounted(() => {
 }
 
 .owner-warning {
-  position: absolute;
-  top: 64px; /* 紧贴固定为 64px 的 header 下方 */
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
+  position: relative;
   z-index: 50;
   background: linear-gradient(to right, #facc15, #fb923c);
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
   text-align: center;
   color: #78350f;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 加强阴影，让层次感更分明 */
 }
 
 .code-area {
@@ -518,7 +522,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0;
+  padding: 0;
   overflow: hidden;
   width: 100%;
 }
@@ -539,9 +543,9 @@ onUnmounted(() => {
 
 .code-card-container {
   perspective: 1000px;
-  width: min(80vw, 320px);
-  height: min(80vw, 320px);
-  margin-bottom: 1rem;
+  width: min(65vh, 80vw, 300px);
+  height: min(65vh, 80vw, 300px);
+  margin-bottom: 0.5rem;
   cursor: pointer;
   z-index: 10;
 }
