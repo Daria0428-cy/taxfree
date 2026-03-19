@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [
     vue(),
     basicSsl(),
+    /* 暂时注释 PWA 插件及其本地缓存配置
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
@@ -50,6 +51,7 @@ export default defineConfig({
         ]
       }
     })
+    */
   ],
   resolve: {
     alias: {
