@@ -16,7 +16,7 @@
           <div>
             <div style="display: flex; align-items: center; gap: 8px;">
               <h1 class="title-text">退税小票管理</h1>
-              <button 
+              <!-- <button 
                 class="btn-refresh-code"
                 @click="forceUpdateCode"
                 title="清除缓存并获取最新代码"
@@ -25,7 +25,7 @@
                   <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
                 </svg>
                 获取最新代码
-              </button>
+              </button> -->
             </div>
             <p class="title-sub">共 {{ receipts.length }} 张小票</p>
           </div>
@@ -107,8 +107,14 @@
             >
               <div class="receipt-num">#{{ index + 1 }}</div>
               <div class="receipt-main">
-                <p class="receipt-ticket">{{ receipt.ticketNumber }}</p>
-                <p class="receipt-time">{{ formatTime(receipt.createdAt) }}</p>
+                <div class="receipt-info-row">
+                  <p class="receipt-ticket">{{ receipt.ticketNumber }}</p>
+                  <span v-if="receipt.amount" class="receipt-amount-tag">₩{{ Number(receipt.amount).toLocaleString() }}</span>
+                </div>
+                <div class="receipt-meta-row">
+                  <span v-if="receipt.name" class="receipt-name">{{ receipt.name }}</span>
+                  <span class="receipt-time">{{ formatTime(receipt.createdAt) }}</span>
+                </div>
               </div>
               <span v-if="receipt.isAbnormal" class="badge-abnormal">异常</span>
               <div class="receipt-actions">
@@ -164,6 +170,23 @@
                 v-model="editTicketNumber"
                 placeholder="请输入票号"
                 class="figma-input font-mono"
+              />
+            </div>
+            <div class="form-group" style="margin-top: 1.25rem;">
+              <label class="figma-label">商店/品类</label>
+              <input
+                v-model="editName"
+                placeholder="如: Olive Young"
+                class="figma-input"
+              />
+            </div>
+            <div class="form-group" style="margin-top: 1.25rem;">
+              <label class="figma-label">金额 (₩)</label>
+              <input
+                v-model="editAmount"
+                type="number"
+                placeholder="金额"
+                class="figma-input"
               />
             </div>
             <div class="form-group" style="margin-top: 1.25rem;">
@@ -228,6 +251,8 @@ const editDialogVisible = ref(false);
 const deleteDialogVisible = ref(false);
 const editingReceipt = ref(null);
 const editTicketNumber = ref('');
+const editName = ref('');
+const editAmount = ref('');
 const editOwner = ref('');
 const deleteTarget = ref(null);
 
@@ -261,19 +286,10 @@ const refresh = () => {
 const forceUpdateCode = () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
-      for (const registration of registrations) {
-        registration.unregister();
+      for (let registration of registrations) {
+        registration.update();
       }
-      // 清除所有缓存后强制刷新
-      if ('caches' in window) {
-        caches.keys().then((names) => {
-          for (const name of names) caches.delete(name);
-        });
-      }
-      ElMessage.success('正在获取最新代码...');
-      setTimeout(() => {
-        window.location.reload(true);
-      }, 500);
+      window.location.reload(true);
     });
   } else {
     window.location.reload(true);
@@ -288,6 +304,8 @@ const formatTime = (ts) => {
 const editReceipt = (r) => {
   editingReceipt.value = r;
   editTicketNumber.value = r.ticketNumber;
+  editName.value = r.name || '';
+  editAmount.value = r.amount || '';
   editOwner.value = r.owner || '';
   editDialogVisible.value = true;
 };
@@ -299,6 +317,8 @@ const saveEdit = () => {
   }
   updateReceipt(editingReceipt.value.id, {
     ticketNumber: editTicketNumber.value.trim(),
+    name: editName.value.trim(),
+    amount: editAmount.value.toString().trim(),
     owner: editOwner.value
   });
   refresh();
@@ -631,6 +651,16 @@ onMounted(refresh);
 .receipt-main {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.receipt-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .receipt-ticket {
@@ -644,10 +674,35 @@ onMounted(refresh);
   white-space: nowrap;
 }
 
-.receipt-time {
+.receipt-amount-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.receipt-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.75rem;
   color: #6b7280;
-  margin: 0.25rem 0 0 0;
+}
+
+.receipt-name {
+  font-weight: 500;
+  color: #4b5563;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.receipt-time {
+  margin: 0;
 }
 
 .badge-abnormal {

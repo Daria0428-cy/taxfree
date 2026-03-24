@@ -64,15 +64,37 @@
               <line x1="6" y1="12" x2="18" y2="12"/>
             </svg>
           </div>
-          <h3>{{ ticketNumber ? '确认票号' : '手动录入' }}</h3>
-          <p class="manual-hint">{{ ticketNumber ? '请检查识别结果是否准确，如有误请手动修改' : '请输入小票上的条码或二维码数字' }}</p>
-          <el-input
-            ref="ticketInputRef"
-            v-model="ticketNumber"
-            placeholder="请输入票号"
-            class="ticket-input"
-            @keydown.enter="saveReceipt"
-          />
+          <h3>{{ ticketNumber ? '确认详情' : '手动录入' }}</h3>
+          <p class="manual-hint">{{ ticketNumber ? '请检查识别结果并补充票据信息' : '请输入小票上的条码数字与备注' }}</p>
+          
+          <div class="form-item">
+            <label class="form-label">退税票号</label>
+            <el-input
+              ref="ticketInputRef"
+              v-model="ticketNumber"
+              placeholder="请输入票号（必填）"
+              class="ticket-input mb-3"
+            />
+          </div>
+
+          <div class="form-item">
+            <label class="form-label">商店/品类</label>
+            <el-input
+              v-model="receiptName"
+              placeholder="如: Olive Young"
+              class="ticket-input"
+            />
+          </div>
+          <div class="form-item">
+            <label class="form-label">金额 (₩)</label>
+            <el-input
+              v-model="receiptAmount"
+              type="number"
+              placeholder="金额"
+              class="ticket-input"
+            />
+          </div>
+
           <div class="manual-btns">
             <button class="btn-outline" @click="switchToScan">重新扫码</button>
             <button class="btn-primary" :disabled="!ticketNumber?.trim()" @click="saveReceipt">
@@ -151,6 +173,8 @@ import { Html5Qrcode } from 'html5-qrcode';
 import { loadData, addReceipt, addOwner } from '../utils/receiptStorage.js';
 
 const ticketNumber = ref('');
+const receiptName = ref(''); // 新增：票据名称
+const receiptAmount = ref(''); // 新增：票据金额
 const selectedOwner = ref('');
 const owners = ref([]);
 const showManualInput = ref(false);
@@ -177,7 +201,6 @@ const startScanner = async () => {
       (decodedText) => {
         // 如果在暂停中，忽略当前扫码结果
         if (isPaused.value) return;
-
         handleScannedResult(decodedText);
       },
       () => {}
@@ -224,6 +247,8 @@ const switchToManual = () => {
 const switchToScan = () => {
   showManualInput.value = false;
   ticketNumber.value = '';
+  receiptName.value = '';
+  receiptAmount.value = '';
   isScanning.value = true;
 };
 
@@ -232,9 +257,14 @@ const saveReceipt = () => {
     ElMessage.error('请输入或扫描票号');
     return;
   }
-  addReceipt(ticketNumber.value.trim(), selectedOwner.value);
+  addReceipt(ticketNumber.value.trim(), selectedOwner.value, {
+    name: receiptName.value.trim(),
+    amount: receiptAmount.value.trim()
+  });
   ElMessage.success('小票已保存');
   ticketNumber.value = '';
+  receiptName.value = '';
+  receiptAmount.value = '';
   if (showManualInput.value) {
     switchToScan();
   }
@@ -508,8 +538,22 @@ onUnmounted(stopScanner);
   margin: 0 0 1.5rem;
 }
 
+.form-item {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
 .ticket-input {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .ticket-input :deep(.el-input__wrapper) {
