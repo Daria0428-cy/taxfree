@@ -187,14 +187,17 @@ const ticketInputRef = ref(null);
 let scannerInstance = null;
 
 // 处理移动端键盘弹出导致的高度问题
-const viewportHeight = ref('100vh');
+const viewportHeight = ref('100%');
 const updateViewportHeight = () => {
   if (window.visualViewport) {
-    viewportHeight.value = `${window.visualViewport.height}px`;
-    // 强制滚动到顶部，防止 iOS 键盘弹回后页面偏移
-    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      window.scrollTo(0, 0);
-    }
+    // 使用 requestAnimationFrame 确保在浏览器渲染帧同步更新，减少抖动
+    requestAnimationFrame(() => {
+      viewportHeight.value = `${window.visualViewport.height}px`;
+      // 强制滚动到顶部，防止 iOS 键盘弹回后页面偏移
+      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.scrollTo(0, 0);
+      }
+    });
   }
 };
 
@@ -332,6 +335,8 @@ onUnmounted(() => {
   flex-direction: column;
   overflow: hidden;
   width: 100%;
+  /* 增加过渡效果，让键盘导致的视口高度变化更丝滑，减少抖动感 */
+  transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .page-header {
