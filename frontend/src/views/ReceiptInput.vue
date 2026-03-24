@@ -327,15 +327,11 @@ onUnmounted(() => {
 
 <style scoped>
 .receipt-input-page {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background: linear-gradient(to bottom right, #eff6ff, #f5f3ff, #fdf2f8);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  width: 100%;
 }
 
 .page-header {
