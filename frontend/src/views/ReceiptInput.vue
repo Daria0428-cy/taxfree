@@ -1,5 +1,5 @@
 <template>
-  <div class="receipt-input-page">
+  <div class="receipt-input-page" :style="{ height: viewportHeight }">
     <!-- Header -->
     <div class="page-header">
       <button class="btn-back" @click="$router.push('/')">
@@ -186,6 +186,18 @@ const isPaused = ref(false); // 新增：正在暂停处理，防止重复扫码
 const ticketInputRef = ref(null);
 let scannerInstance = null;
 
+// 处理移动端键盘弹出导致的高度问题
+const viewportHeight = ref('100vh');
+const updateViewportHeight = () => {
+  if (window.visualViewport) {
+    viewportHeight.value = `${window.visualViewport.height}px`;
+    // 强制滚动到顶部，防止 iOS 键盘弹回后页面偏移
+    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      window.scrollTo(0, 0);
+    }
+  }
+};
+
 const selectedOwnerName = computed(() => {
   if (!selectedOwner.value) return '未指定持有人';
   const o = owners.value.find((x) => x.id === selectedOwner.value);
@@ -297,9 +309,20 @@ onMounted(() => {
   owners.value = data.owners;
   selectedOwner.value = data.lastSelectedOwner || '';
   if (isScanning.value && !showManualInput.value) startScanner();
+
+  // 绑定布局高度监听
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateViewportHeight);
+    updateViewportHeight();
+  }
 });
 
-onUnmounted(stopScanner);
+onUnmounted(() => {
+  stopScanner();
+  if (window.visualViewport) {
+    window.visualViewport.removeEventListener('resize', updateViewportHeight);
+  }
+});
 </script>
 
 <style scoped>
@@ -501,7 +524,9 @@ onUnmounted(stopScanner);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1.5rem calc(180px + env(safe-area-inset-bottom));
+  padding: 1.5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .scan-error, .manual-box {
