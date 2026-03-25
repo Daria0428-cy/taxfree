@@ -28,12 +28,14 @@ export const saveData = (data) => {
   }
 };
 
-export const addReceipt = (ticketNumber, owner) => {
+export const addReceipt = (ticketNumber, owner, meta = {}) => {
   const data = loadData();
   const newReceipt = {
     id: `receipt_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
     ticketNumber,
     owner: owner || '',
+    name: meta.name || '',
+    amount: meta.amount || '',
     isAbnormal: false,
     createdAt: Date.now()
   };
@@ -87,10 +89,15 @@ export const loadDemoData = () => {
       for (let i = 0; i < 2; i++) {
         addReceipt(
           `${Date.now().toString().slice(-10)}${Math.random().toString().slice(2, 6)}`,
-          owner.id
+          owner.id,
+          { name: '演示商品', amount: (Math.random() * 50000 + 10000).toFixed(0) }
         );
       }
     }
   });
-  addReceipt(`${Date.now().toString().slice(-10)}${Math.random().toString().slice(2, 6)}`, '');
+  addReceipt(
+    `${Date.now().toString().slice(-10)}${Math.random().toString().slice(2, 6)}`,
+    '',
+    { name: '未指定持有人', amount: (Math.random() * 50000 + 10000).toFixed(0) }
+  );
 };

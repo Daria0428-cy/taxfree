@@ -1,5 +1,5 @@
 <template>
-  <div class="receipt-input-page" :style="{ height: viewportHeight }">
+  <div class="receipt-input-page">
     <!-- Header -->
     <div class="page-header">
       <button class="btn-back" @click="$router.push('/')">
@@ -14,96 +14,98 @@
       </div>
     </div>
 
-    <!-- 扫码模式 -->
-    <template v-if="!showManualInput">
-      <div class="scan-area">
-        <div v-if="scanningError" class="scan-error">
-          <div class="error-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-            </svg>
+    <div class="content-area">
+      <!-- 扫码模式 -->
+      <template v-if="!showManualInput">
+        <div class="scan-area">
+          <div v-if="scanningError" class="scan-error">
+            <div class="error-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+            </div>
+            <h3>无法启动相机</h3>
+            <p>请检查相机权限或使用手动输入</p>
+            <button class="btn-manual" @click="switchToManual">
+              手动输入票号
+            </button>
           </div>
-          <h3>无法启动相机</h3>
-          <p>请检查相机权限或使用手动输入</p>
-          <button class="btn-manual" @click="switchToManual">
-            手动输入票号
-          </button>
-        </div>
-        <div v-else class="scan-ui-container">
-          <div class="scan-card">
-            <div id="qr-reader" class="qr-reader"></div>
+          <div v-else class="scan-ui-container">
+            <div class="scan-card">
+              <div id="qr-reader" class="qr-reader"></div>
 
-            <div v-if="ticketNumber" :class="['scanned-result-overlay', { 'is-processing': isPaused }]">
-              <div v-if="isPaused" class="success-check-mark">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="4">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <div>
-                <p class="scanned-label">已识别票号</p>
-                <p class="scanned-value">{{ ticketNumber }}</p>
+              <div v-if="ticketNumber" :class="['scanned-result-overlay', { 'is-processing': isPaused }]">
+                <div v-if="isPaused" class="success-check-mark">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="4">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="scanned-label">已识别票号</p>
+                  <p class="scanned-value">{{ ticketNumber }}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <!-- 手动输入/确认模式 -->
-    <template v-else>
-      <div class="manual-area">
-        <div class="manual-box">
-          <div class="manual-icon">
-            <svg v-if="ticketNumber" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-              <line x1="6" y1="8" x2="18" y2="8"/>
-              <line x1="6" y1="12" x2="18" y2="12"/>
-            </svg>
-          </div>
-          <h3>{{ ticketNumber ? '确认详情' : '手动录入' }}</h3>
-          <p class="manual-hint">{{ ticketNumber ? '请检查识别结果并补充票据信息' : '请输入小票上的条码数字与备注' }}</p>
-          
-          <div class="form-item">
-            <label class="form-label">退税票号</label>
-            <el-input
-              ref="ticketInputRef"
-              v-model="ticketNumber"
-              placeholder="请输入票号（必填）"
-              class="ticket-input mb-3"
-            />
-          </div>
+      <!-- 手动输入/确认模式 -->
+      <template v-else>
+        <div class="manual-area">
+          <div class="manual-box">
+            <div class="manual-icon">
+              <svg v-if="ticketNumber" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                <line x1="6" y1="8" x2="18" y2="8"/>
+                <line x1="6" y1="12" x2="18" y2="12"/>
+              </svg>
+            </div>
+            <h3>{{ ticketNumber ? '确认详情' : '手动录入' }}</h3>
+            <p class="manual-hint">{{ ticketNumber ? '请检查识别结果并补充票据信息' : '请输入小票上的条码数字与备注' }}</p>
+            
+            <div class="form-item">
+              <label class="form-label">退税票号</label>
+              <el-input
+                ref="ticketInputRef"
+                v-model="ticketNumber"
+                placeholder="请输入票号（必填）"
+                class="ticket-input mb-3"
+              />
+            </div>
 
-          <div class="form-item">
-            <label class="form-label">商店/品类</label>
-            <el-input
-              v-model="receiptName"
-              placeholder="如: Olive Young"
-              class="ticket-input"
-            />
-          </div>
-          <div class="form-item">
-            <label class="form-label">金额 (₩)</label>
-            <el-input
-              v-model="receiptAmount"
-              type="number"
-              placeholder="金额"
-              class="ticket-input"
-            />
-          </div>
+            <div class="form-item">
+              <label class="form-label">商店/品类</label>
+              <el-input
+                v-model="receiptName"
+                placeholder="如: Olive Young"
+                class="ticket-input"
+              />
+            </div>
+            <div class="form-item">
+              <label class="form-label">金额 (₩)</label>
+              <el-input
+                v-model="receiptAmount"
+                type="number"
+                placeholder="金额"
+                class="ticket-input"
+              />
+            </div>
 
-          <div class="manual-btns">
-            <button class="btn-outline" @click="switchToScan">重新扫码</button>
-            <button class="btn-primary" :disabled="!ticketNumber?.trim()" @click="saveReceipt">
-              {{ ticketNumber ? '确认并保存' : '立即保存' }}
-            </button>
+            <div class="manual-btns">
+              <button class="btn-outline" @click="switchToScan">重新扫码</button>
+              <button class="btn-primary" :disabled="!ticketNumber?.trim()" @click="saveReceipt">
+                {{ ticketNumber ? '确认并保存' : '立即保存' }}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
+    </div>
 
     <!-- 底部操作区 -->
     <div class="bottom-bar">
@@ -168,6 +170,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { Html5Qrcode } from 'html5-qrcode';
 import { loadData, addReceipt, addOwner } from '../utils/receiptStorage.js';
@@ -185,21 +188,8 @@ const scanningError = ref(false);
 const isPaused = ref(false); // 新增：正在暂停处理，防止重复扫码
 const ticketInputRef = ref(null);
 let scannerInstance = null;
-
-// 处理移动端键盘弹出导致的高度问题
-const viewportHeight = ref('100%');
-const updateViewportHeight = () => {
-  if (window.visualViewport) {
-    // 使用 requestAnimationFrame 确保在浏览器渲染帧同步更新，减少抖动
-    requestAnimationFrame(() => {
-      viewportHeight.value = `${window.visualViewport.height}px`;
-      // 强制滚动到顶部，防止 iOS 键盘弹回后页面偏移
-      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        window.scrollTo(0, 0);
-      }
-    });
-  }
-};
+const isStartingScanner = ref(false);
+const router = useRouter();
 
 const selectedOwnerName = computed(() => {
   if (!selectedOwner.value) return '未指定持有人';
@@ -208,7 +198,19 @@ const selectedOwnerName = computed(() => {
 });
 
 const startScanner = async () => {
+  if (isStartingScanner.value) return;
+  isStartingScanner.value = true;
   try {
+    // 确保没有遗留实例
+    if (scannerInstance) {
+      await scannerInstance.stop().catch(() => {});
+      scannerInstance = null;
+    }
+    const mountEl = document.getElementById('qr-reader');
+    if (!mountEl) {
+      isStartingScanner.value = false;
+      return;
+    }
     scannerInstance = new Html5Qrcode('qr-reader');
     await scannerInstance.start(
       { facingMode: 'environment' },
@@ -220,10 +222,12 @@ const startScanner = async () => {
       },
       () => {}
     );
+    scanningError.value = false;
   } catch (err) {
     console.error('Scanner error:', err);
     scanningError.value = true;
   }
+  isStartingScanner.value = false;
 };
 
 const handleScannedResult = (text) => {
@@ -277,12 +281,11 @@ const saveReceipt = () => {
     amount: receiptAmount.value.trim()
   });
   ElMessage.success('小票已保存');
+  stopScanner();
   ticketNumber.value = '';
   receiptName.value = '';
   receiptAmount.value = '';
-  if (showManualInput.value) {
-    switchToScan();
-  }
+  router.push('/');
 };
 
 const handleAddOwner = () => {
@@ -312,19 +315,10 @@ onMounted(() => {
   owners.value = data.owners;
   selectedOwner.value = data.lastSelectedOwner || '';
   if (isScanning.value && !showManualInput.value) startScanner();
-
-  // 绑定布局高度监听
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', updateViewportHeight);
-    updateViewportHeight();
-  }
 });
 
 onUnmounted(() => {
   stopScanner();
-  if (window.visualViewport) {
-    window.visualViewport.removeEventListener('resize', updateViewportHeight);
-  }
 });
 </script>
 
@@ -335,8 +329,14 @@ onUnmounted(() => {
   flex-direction: column;
   overflow: hidden;
   width: 100%;
-  /* 增加过渡效果，让键盘导致的视口高度变化更丝滑，减少抖动感 */
-  transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100dvh;
+}
+
+.content-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .page-header {
@@ -349,6 +349,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  position: sticky;
+  top: 0;
 }
 
 .btn-back {
@@ -385,9 +387,10 @@ onUnmounted(() => {
 
 .scan-area {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 0 0 calc(150px + env(safe-area-inset-bottom)); /* 避开固定底栏，但不加内边距 */
+  padding: 0 0 env(safe-area-inset-bottom);
   justify-content: stretch;
   align-items: stretch;
   overflow: hidden;
@@ -526,8 +529,8 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  /* 让页面整体滚动，不在此处单独滚动，避免顶部栏“跟着跑” */
+  overflow: visible;
 }
 
 .scan-error, .manual-box {
@@ -595,17 +598,12 @@ onUnmounted(() => {
 }
 
 .bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   border-top: 1px solid #e5e7eb;
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
   z-index: 1000;
-  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.05); /* 向上增加投影，增强“悬浮感”，提示用户下面还有内容 */
 }
 
 .section-label {

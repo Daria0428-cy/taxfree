@@ -13,22 +13,18 @@
               <polyline points="10 9 9 9 8 9"/>
             </svg>
           </div>
-          <div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <h1 class="title-text">退税小票管理</h1>
-              <!-- <button 
-                class="btn-refresh-code"
-                @click="forceUpdateCode"
-                title="清除缓存并获取最新代码"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                </svg>
-                获取最新代码
-              </button> -->
-            </div>
+          <div class="title-main">
+            <h1 class="title-text">退税小票管理</h1>
             <p class="title-sub">共 {{ receipts.length }} 张小票</p>
           </div>
+          <button class="btn-primary btn-export-like" :disabled="exporting" @click="exportToAlbum">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v10"/>
+              <path d="M8 11l4 4 4-4"/>
+              <rect x="4" y="3" width="16" height="18" rx="2"/>
+            </svg>
+            <span>{{ exporting ? '中' : '导出' }}</span>
+          </button>
         </div>
         <div class="view-tabs">
           <button
@@ -137,22 +133,31 @@
       </template>
     </div>
 
+    <!-- 导出专用隐藏面板 -->
+    <div ref="exportPanelRef" style="position: absolute; left: -9999px; top: -9999px; width: 960px; background: white; padding: 24px;" aria-hidden="true">
+      <h3 class="export-panel-title">退税小票明细 ({{ flatReceipts.length }})</h3>
+      <div v-for="r in flatReceipts" :key="`export-${r.id}`" class="export-item">
+        <div class="export-meta">
+          <h4>{{ r.ticketNumber }}</h4>
+          <p v-if="r.name">商店/品类：{{ r.name }}</p>
+          <p v-if="r.amount">金额：₩{{ Number(r.amount).toLocaleString() }}</p>
+          <p>持有人：{{ getOwnerName(r.owner) }}</p>
+          <p>创建时间：{{ formatTime(r.createdAt) }}</p>
+        </div>
+        <svg :id="`barcode-${r.id}`"></svg>
+      </div>
+    </div>
+
     <!-- 底部按钮 -->
     <div class="bottom-bar">
       <div class="bottom-bar-inner">
-      <button class="btn-primary" @click="$router.push('/input')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-        继续录入
-      </button>
-      <button v-if="receipts.length === 0" class="btn-demo" @click="loadDemo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
-        加载演示数据
-      </button>
+        <button class="btn-primary" @click="$router.push('/input')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          继续录入
+        </button>
       </div>
     </div>
 
@@ -238,10 +243,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { loadData, updateReceipt, deleteReceipt, deleteOwner, loadDemoData } from '../utils/receiptStorage.js';
+import html2canvas from 'html2canvas';
+import JsBarcode from 'jsbarcode';
+import { loadData, updateReceipt, deleteReceipt, deleteOwner } from '../utils/receiptStorage.js';
 
 const router = useRouter();
 const receipts = ref([]);
@@ -255,6 +262,8 @@ const editName = ref('');
 const editAmount = ref('');
 const editOwner = ref('');
 const deleteTarget = ref(null);
+const exporting = ref(false);
+const exportPanelRef = ref(null);
 
 const abnormalCount = computed(() => receipts.value.filter((r) => r.isAbnormal).length);
 
@@ -276,6 +285,19 @@ const groupedReceipts = computed(() => {
   });
   return groups;
 });
+
+const ownerNameMap = computed(() => {
+  const map = {};
+  owners.value.forEach((o) => { map[o.id] = o.name; });
+  return map;
+});
+
+const getOwnerName = (ownerId) => {
+  if (!ownerId) return '未指定持有人';
+  return ownerNameMap.value[ownerId] || '未指定持有人';
+};
+
+const flatReceipts = computed(() => filteredReceipts.value);
 
 const refresh = () => {
   const data = loadData();
@@ -353,10 +375,51 @@ const goScanner = (ownerId) => {
   router.push(`/scanner/${ownerId || ''}`);
 };
 
-const loadDemo = () => {
-  loadDemoData();
-  refresh();
-  ElMessage.success('演示数据已加载');
+const renderBarcodes = () => {
+  flatReceipts.value.forEach((r) => {
+    const id = `barcode-${r.id}`;
+    const el = document.getElementById(id);
+    if (el) {
+      JsBarcode(el, r.ticketNumber || '', {
+        displayValue: true,
+        fontSize: 14,
+        height: 60,
+        margin: 4
+      });
+    }
+  });
+};
+
+const exportToAlbum = async () => {
+  if (exporting.value) return;
+  if (!flatReceipts.value.length) {
+    ElMessage.info('暂无小票可导出');
+    return;
+  }
+  exporting.value = true;
+  try {
+    await nextTick();
+    renderBarcodes();
+    await nextTick();
+    const el = exportPanelRef.value;
+    if (!el) throw new Error('导出容器不存在');
+    const canvas = await html2canvas(el, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      windowWidth: document.documentElement.clientWidth
+    });
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `receipts-${Date.now()}.png`;
+    link.click();
+    ElMessage.success('已导出图片，可保存到相册');
+  } catch (err) {
+    console.error(err);
+    ElMessage.error('导出失败，请重试');
+  }
+  exporting.value = false;
 };
 
 onMounted(refresh);
@@ -364,11 +427,10 @@ onMounted(refresh);
 
 <style scoped>
 .receipt-list-page {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: linear-gradient(to bottom right, #eff6ff, #f5f3ff, #fdf2f8);
-  overflow: hidden;
 }
 
 .page-header {
@@ -376,7 +438,9 @@ onMounted(refresh);
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #e5e7eb;
-  z-index: 10;
+  z-index: 20;
+  position: sticky;
+  top: 0;
 }
 
 .header-inner {
@@ -390,6 +454,31 @@ onMounted(refresh);
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1rem;
+  width: 100%;
+}
+
+.title-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-export-like {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+  /* 限制最大宽度，防止挤占 */
+  max-width: 100px;
+}
+
+@media (max-width: 360px) {
+  .btn-export-like span { display: none; }
+  .btn-export-like { padding: 0.5rem; max-width: fit-content; }
 }
 
 .title-icon {
@@ -401,6 +490,7 @@ onMounted(refresh);
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
 }
 
 .title-text {
@@ -411,41 +501,21 @@ onMounted(refresh);
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-}
-
-.btn-refresh-code {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: rgba(37, 99, 235, 0.1);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  color: #2563eb;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
   white-space: nowrap;
-}
-
-.btn-refresh-code:hover {
-  background: rgba(37, 99, 235, 0.15);
-  transform: translateY(-1px);
-}
-
-.btn-refresh-code:active {
-  transform: translateY(0);
-}
-
-.btn-refresh-code svg {
-  opacity: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .title-sub {
   font-size: 0.75rem;
   color: #6b7280;
-  margin: 0.25rem 0 0 0;
+  margin: 0.15rem 0 0 0;
+}
+
+.btn-export-like:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .view-tabs {
@@ -493,7 +563,47 @@ onMounted(refresh);
   max-width: 672px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1rem 180px; /* 进一步增加底部内边距，确保内容不被双排按钮或不同机型固定栏遮挡 */
+  padding: 1.25rem 1rem;
+  /* 为底部固定按钮预留空间 */
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+
+.export-panel-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+}
+
+.export-item {
+  border: 2px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 1.3rem 1.8rem;
+  margin-bottom: 1.3rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.export-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.export-meta h4 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.export-meta p {
+  margin: 0.2rem 0;
+  color: #4b5563;
+  font-size: 1.7rem;
+  line-height: 1.5;
+}
+
+.export-item svg {
+  width: 300px;
+  height: 160px;
 }
 
 .empty-state {
@@ -742,14 +852,14 @@ onMounted(refresh);
 
 .bottom-bar {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.9); /* 稍微增加不透明度 */
-  backdrop-filter: blur(12px); /* 增强模糊 */
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
   border-top: 1px solid #e5e7eb;
-  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom)); /* 适配 iOS 安全区域 */
-  z-index: 1000; /* 提高层级 */
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  z-index: 40;
 }
 
 .bottom-bar-inner {
